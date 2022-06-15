@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/assets/images/favicon.png">
+    <title>ZAPTUSS - Envio em Massa no Whatsapp</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/assets/plugins/dropify/dist/css/dropify.min.css">
+    <!-- Custom CSS -->
+    <link href="../static/css/style.css" rel="stylesheet">
+    <!-- colors -->
+    <!-- You can change the theme colors from here -->
+    <link href="../static/css/colors/megna-dark.css" id="theme" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+    <script src="../static/js/nunjucks.js"></script>
+    <script>
+        window.nodeRequire = require;
+        delete window.require;
+        delete window.exports;
+        delete window.module;
+    </script>
+    <script type="text/javascript">
+        var result = [];
+
+        function handleContacts_js(contacts, group_name) {
+            var extractorTableHolder = $("#id_extractor_table");
+            for (var i = 1; i < contacts.length - 1; i++) {
+                var obj = {};
+
+                obj[`${group_name} - ${i.pad(3)}`] = contacts[i];
+
+                result.push(obj);
+                extractorTableHolder.append(`
+                <tr data-index="${i + 1}">
+                    <td><h6 id="id_contact_name_${i + 1}">${group_name} - ${i.pad(3)}</h6></td>
+
+                    <td>
+                        <h6 id="id_contact_phone_number_${i + 1}">${contacts[i]}</h6>
+                    </td>
+                </tr>
+                `)
+            }
+        }
+
+        Number.prototype.pad = function (size) {
+            var s = String(this);
+            while (s.length < (size || 2)) {
+                s = "0" + s;
+            }
+            return s;
+        }
+
+    </script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body class="fix-header card-no-border">
+<!-- ============================================================== -->
+<!-- Preloader - style you can find in spinners.css -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<div id="main-wrapper">
+    <!-- ============================================================== -->
+    <!-- End Topbar header -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Page wrapper  -->
+    <!-- ============================================================== -->
+    <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="row page-titles">
+                <div class="col-md-6 col-6 align-self-center">
+                    <h3 class="text-themecolor m-b-0 m-t-0">Extrator de Contatos</h3>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                        <li class="breadcrumb-item active">Extrator de Contatos</li>
+                    </ol>
+                </div>
+                <div class="col-md-6 col-6 justify-content-end">
+                    <div class="d-flex m-t-10 justify-content-end">
+                        <div class="d-flex m-r-20 m-l-10 hidden-md-down">
+                            <div class="chart-text m-r-10">
+                                <h6 class="m-b-0"><small>Plano</small></h6>
+                                <h4 class="m-t-0 text-warning" id="plan-name"></h4></div>
+                        </div>
+                        <div class="d-flex m-r-20 m-l-10 hidden-md-down">
+                            <div class="chart-text m-r-10">
+                                <h6 class="m-b-0"><small>Envios</small></h6>
+                                <h4 class="m-t-0 text-info" id="plan-sent"></h4></div>
+                            <div class="spark-chart">
+                                <div id="monthchart"></div>
+                            </div>
+                        </div>
+                        <div class="d-flex m-r-20 m-l-10 hidden-md-down">
+                            <div class="chart-text m-r-10">
+                                <h6 class="m-b-0"><small>Restante</small></h6>
+                                <h4 class="m-t-0 text-primary" id="plan-left"></h4></div>
+                            <div class="spark-chart">
+                                <div id="lastmonthchart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Start Page Content -->
+            <!-- ============================================================== -->
+            <div class="row justify-content-around">
+                <div class="card col-md-4 col-lg-4">
+                    <div class="card-body">
+                        <div class="row justify-content-around">
+                            <p class="card-title align-self-center justify-content-center"
+                               style="text-align: center">
+                                Click no botão abaixo para se conectar ao whatsapp e listar os grupos.
+                            </p>
+                            <button class="btn btn-outline-warning m-t-10" id="id-list-groups"
+                                    style="height: 37px">
+                                Listar Grupos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card col-md-4 col-lg-4 ">
+                    <div class="card-body">
+                        <div class="row justify-content-center align-content-end">
+                            <p class="card-title align-self-center justify-content-center"
+                               style="text-align: center">
+                                Clique no botão abaixo para limpar os dados da tabela.
+                            </p>
+                            <button class="btn btn-outline-danger"
+                                    style="position: absolute; bottom: 20px"
+                                    id="id-clean-table" style="height: 37px">Limpar
+                                Tabela
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card col col-4 col-md-4 col-lg-4 ">
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <p class="card-title align-self-center justify-content-center"
+                               style="text-align: center">
+                                Clique abaixo para sair da ultima conta utilizada de Whatsapp.
+                            </p>
+                            <button class="btn btn-outline-danger "
+                                    style="position: absolute; bottom: 20px"
+                                    id="id-clean-cache" style="height: 37px">Mudar de Conta
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-12 card">
+                    <div class="row justify-content-start">
+                        <div class="col-8 col-sm-8 col-md-8 col-lg-8">
+                            <h3 class="card-title text-themecolor p-l-20 p-t-20">Lista de Grupos</h3>
+                            <p class="p-l-20">Acompanhe abaixo a lista completa de grupos registrado nesse whatsapp</p>
+                        </div>
+                        <div class="m-t-20 col-4">
+                            <input type="checkbox" id="select_all"
+                                   class="align-self-end card-title filled-in chk-col-orange "
+                                   style="position: absolute; right: 20px; bottom: 0"
+                                   checked="">
+                            <label for="select_all" style="position: absolute; right: 20px; bottom: 0">Selecionar
+                                todos</label>
+                        </div>
+                    </div>
+                    <div class="card-body p-t-0">
+                        <div class="row justify-content-end">
+
+                        </div>
+                        <div class="bootstrap-table">
+                            <div class="fixed-table-container m-t-20"
+                                 style="height: 350px; ">
+                                <table class="table-hover table">
+                                    <thead class="justify-content-around">
+                                    <tr class="justify-content-around">
+                                        <th><h5 class="text-themecolor">Título do Grupo</h5>
+                                        </th>
+                                        <th><h5 class="text-themecolor">Id</h5>
+                                        </th>
+                                        <th><h5 class="text-themecolor" style="text-align: end">Extrair Contatos?</h5>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                                <div class="fixed-table-body"
+                                     style="position: relative; height: 280px; overflow: auto; display: block;">
+                                    <table class="table table-hover color-table"
+                                           data-toggle="table" data-height="300"
+                                           data-sort-order="desc"
+                                           data-mobile-responsive="true">
+                                        <tbody id='id-groups-table'>
+                                        <tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-6 col-md-6 col-lg-6">
+                <input type="checkbox" id="one-file"
+                       class="align-self-end card-title filled-in chk-col-orange "
+                       style="position: absolute; right: 20px; bottom: 0">
+                <label for="one-file" >Salvar em Arquivo Único</label>
+                <input type="checkbox" id="many-file"
+                       class="align-self-end card-title filled-in chk-col-orange "
+                       style="position: absolute; right: 20px; bottom: 0"
+                       checked="">
+                <label for="one-file" >Salvar em Arquivos Separados</label>
+            </div>
+            <div class="col col-6 col-lg-6 col-md-6 m-t-20">
+                <button class="btn btn-outline-warning" id="start-extraction">Iniciar Extração</button>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<script src="../static/assets/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="../static/assets/plugins/bootstrap/js/popper.min.js"></script>
+<script src="../static/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="../static/js/jquery.slimscroll.js"></script>
+<!--Wave Effects -->
+<script src="../static/js/waves.js"></script>
+<!--Menu sidebar -->
+<script src="../static/js/sidebarmenu.js"></script>
+<!--stickey kit -->
+<script src="../static/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+<script src="../static/assets/plugins/sparkline/jquery.sparkline.min.js"></script>
+<!--Custom JavaScript -->
+<script src="../static/js/custom.min.js"></script>
+<!-- ============================================================== -->
+<!-- Plugins for this page -->
+<!-- ============================================================== -->
+<!-- jQuery file upload -->
+<script src="../static/assets/plugins/dropify/dist/js/dropify.min.js"></script>
+<!-- ============================================================== -->
+<!-- This page plugins -->
+<!-- ============================================================== -->
+<script src="../static/js/jasny-bootstrap.js"></script>
+<script src="../static/js/groupExtractorHelpers.js"></script>
+<!-- ============================================================== -->
+<!-- Style switcher -->
+<!-- ============================================================== -->
+<script src="../static/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+<!-- ============================================================== -->
+<!-- Style switcher -->
+<!-- ============================================================== -->
+<script src="../static/assets/plugins/bootstrap-switch/bootstrap-switch.min.js"></script>
+
+<script src="../static/js/baseDashboard.js">
+
+</script>
+<script>
+    const {Menu, MenuItem} = nodeRequire("electron").remote;
+    const {ipcRenderer} = nodeRequire("electron");
+    const QRcode = nodeRequire("qrcode")
+    const Swal = nodeRequire("sweetalert2");
+    const hp = nodeRequire("../static/js/helpers.js");
+    const vb = nodeRequire("venom-bot");
+
+    const menu = new Menu();
+    var currUser = null;
+
+    const tableHolder = $("#id-groups-table");
+    var groupList = [];
+    var arg = {};
+
+    $(document).ready(() => {
+
+        ipcRenderer.send("grab-user", 'grab him!');
+
+        ipcRenderer.on("got-user", (event, args) => {
+            currUser = args
+            console.log(args);
+            hp.buildMenu(menu, currUser);
+            displayPlanInfo(currUser);
+            limitSendButton(currUser);
+        });
+
+        ipcRenderer.on(`group-extractor-qrcode`, (event, arg) => {
+            feedbackToUser(arg);
+        });
+
+        function feedbackToUser(arg) {
+            console.log(arg['qrcode'])
+            if (arg['type'] === 1) {
+                // show the qr code in Sweet Alert
+                Swal.fire({
+                    title: "Escaneei o QR Code e aguarde o programa baixar as informações...",
+                    text: "Por favor, Escaneei o código utilzando seu Whatsapp " +
+                        "e aguarde enquanto baixamos as informações dos grupos!",
+                    html: `<canvas id="somecanvas"></canvas>`,
+                    showConfirmButton: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                });
+
+                // Get the canvas id and use QRCode to display in it
+                var canvas = document.getElementById("somecanvas");
+                QRcode.toCanvas(canvas, arg['qrcode'], function (error) {
+                    if (error) console.error(error);
+                });
+            } else if (arg['type'] === 2) {
+                // show the user the process has finished
+                Swal.fire({
+                    title: `Conectado!`,
+                    text: `Iniciando extração!`,
+                    icon: "success"
+                });
+            } else if (arg['type'] === 4) {
+                // show the user there was a erro during qrcode scan
+                Swal.fire({
+                    title: "Algo saiu errado!",
+                    text: "Por favor, Escaneei o código utilzando seu Whatsapp!",
+                    icon: "error"
+                });
+            } else if (arg['type'] === 5) {
+                // show the user it is sending messages
+                Swal.fire({
+                    title: 'Extraindo...',
+                    html: arg['message'],// add html attribute if you want or remov
+                    allowOutsideClick: true,
+                    showConfirmButton: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                });
+            } else if (arg['type'] === 6) {
+                // show the user it is sending messages
+                Swal.fire({
+                    title: 'Erro!',
+                    html: arg['message'],// add html attribute if you want or remov
+                    icon: 'error',
+                    allowOutsideClick: true,
+                    showConfirmButton: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                });
+            }
+        }
+
+        $("button#id-list-groups").on("click", async function () {
+            var fired = false;
+
+            Swal.fire({
+                title: 'Gerando QRCode !',
+                html: 'Estabelecendo conexão...',
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                },
+            });
+
+            arg = {
+                "mode": 'listGroups',
+                'grouList': [],
+            }
+
+            ipcRenderer.send("group-generator", arg);
+
+            ipcRenderer.on("group-extractor-connected", (event, arg) => {
+
+                Swal.fire({
+                    title: `Conectado como: ${arg['username']}: ${arg['phoneNumber']}!`,
+                    text: "Baixando informações dos grupos... ",
+                    icon: "success",
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                })
+            });
+
+            ipcRenderer.on("group-list", (event, arg) => {
+
+                Swal.fire({
+                    title: `Lista obtida com sucesso!`,
+                    text: "Lista de Grupos obtida com sucesso ",
+                    icon: "success",
+                });
+
+
+                console.log("passing group list ", arg['groupList'])
+                groupList = []
+                const tableHolder = $("#id-groups-table");
+                groupList = arg['groupList'];
+
+                for (var i = 0; i < Object.keys(groupList).length; i++) {
+                    tableHolder.append(`
+                    <tr>
+                        <td><h6 class="group-name"
+                                data-index="${i}">${Object.keys(groupList)[i]}</h6></td>
+                        <td >
+                            <h6 class="group-id"
+                                data-index="${i}">${Object.values(groupList)[i]} </h6>
+                        </td>
+                        <td>
+                            <input data-index="${i}" type="checkbox" id="md_checkbox_${i}" class="filled-in chk-col-orange group-input" checked="">
+                            <label for="md_checkbox_${i}"></label>
+                        </td>
+                    </tr>
+                `);
+                }
+            });
+
+            ipcRenderer.on("extractor-finished", (event, arg) => {
+                Swal.fire({
+                    title: `Processo Finalizado!`,
+                    text: "Processo finalizado com sucesso",
+                    icon: 'success',
+                });
+            })
+
+            ipcRenderer.on("extracting", (event, arg) => {
+                Swal.fire({
+                    title: `Extraindo Grupos!`,
+                    text: `${arg['message']}`,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                });
+            })
+
+            ipcRenderer.on("extracting-error", (event, arg) => {
+                Swal.fire({
+                    title: `Extraindo Grupos!`,
+                    text: `${arg['message']}`,
+                    icon: 'error'
+                });
+            })
+
+            ipcRenderer.on("qr-code-read", (event, arg) => {
+                Swal.fire({
+                    title: `Conectado!`,
+                    text: `${arg['message']}`,
+                    icon: 'success',
+                    showConfirmButton: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                });
+            })
+        });
+
+        $("button#start-extraction").click(async () => {
+
+            Swal.fire({
+                title: `Extraindo Grupos!`,
+                text: "aguarde enquanto fazemos a extração de contatos dos grupos selecionados",
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                },
+            });
+
+            var groupsToExtract = [];
+            var groupsToExtractName = [];
+
+            let oneFileCondition = $("input#one-file").is(":checked");
+
+            await $(".group-input").each((index, elem) => {
+                if (elem.checked) {
+                    console.log("groups to extract", $(`h6.group-id[data-index='${idx}']`).text())
+                    console.log($(`h6.group-id[data-index='${idx}']`).text())
+                    var idx = $(elem).data("index");
+                    groupsToExtract.push($(`h6.group-id[data-index='${idx}']`).text())
+                    groupsToExtractName.push($(`h6.group-name[data-index='${idx}']`).text())
+                }
+            });
+
+            // save some variables to arg
+            arg['groupsToExtract'] = groupsToExtract;
+            arg['groupsToExtractName'] = groupsToExtractName;
+            arg['mode'] = 'extractMembersOfTheGroups';
+            arg['oneFile'] = oneFileCondition;
+
+            // send information to main processor in order to start the Group Extractor
+            ipcRenderer.send("group-generator", arg);
+
+        });
+
+        $("button#id-clean-cache").on("click", async function () {
+            Swal.fire({
+                title: "Limpando Cache..",
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                },
+                timer: 2000,
+                timerProgressBar: true,
+            });
+            ipcRenderer.send("remove-tokens-folder", 'remove folder')
+        })
+
+        $("button#id-clean-table").on("click", async function () {
+            Swal.fire({
+                title: "Limpando Tabela..",
+                text: 'zerando dados da tabela...',
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                },
+                timer: 2000,
+                timerProgressBar: true,
+            });
+
+            $("#id-groups-table > tr").remove();
+            location.reload();
+
+        })
+
+
+        function removeTokensDir() {
+            const fs = nodeRequire("fs");
+            // ----------------------------------------
+            // remove directory in order to remove session credentials
+            // directory path
+            let currPath = __dirname;
+            currPath = currPath.replace("templates", '');
+            currPath = currPath.replace("engine", '');
+            currPath = currPath.replace("\\", '/');
+            currPath = currPath.replace("\\", '/');
+            currPath = currPath.replace("\\", '/');
+            currPath = currPath.replace("\\", '/');
+            currPath = currPath.replace("\\", '/');
+
+            const dir = currPath + 'tokens/';
+
+            try {
+                // delete directory recursively
+                fs.rmdir(dir, {recursive: true}, (err) => {
+                    if (err) {
+                        console.log(err);
+                    }
+
+                    console.log(`${dir} is deleted!`);
+                });
+            } catch (e) {
+                console.log(e.message)
+                return null;
+            }
+
+        }
+
+        ipcRenderer.on("token-removed", (event, arg) => {
+            Swal.fire({
+                title: `Finalizado!`,
+                text: `${arg['message']}`,
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            });
+        })
+
+        ipcRenderer.on("error-remove-token", (event, arg) => {
+            Swal.fire({
+                title: `Finalizado!`,
+                text: `${arg['message']}`,
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            });
+        })
+    });
+
+
+    /*
+        function exportTableToCSV(html, filename) {
+            var csv = [];
+            var rows = document.querySelectorAll("table tr");
+
+            for(var i = 0; i < rows.length; i++){
+                var row = [], cols = rows[i].querySelectorAll("td, th");
+                for(var j = 0; j < cols.length; j++){
+                    row.push(cols[j].innerText);
+                }
+                csv.push(row.join(","));
+            }
+
+            // download csv file
+            downloadCSV(csv.join("\n"), filename);
+        }
+
+        function downloadCSV(csv, filename) {
+            var csvFile;
+            var downloadLink;
+
+            if (window.Blob == undefined || window.URL == undefined || window.URL.createObjectURL == undefined) {
+                alert("Your browser doesn't support Blobs");
+                return;
+            }
+
+            csvFile = new Blob([csv], {type:"text/csv"});
+            downloadLink = document.createElement("a");
+            downloadLink.download = filename + ".csv";
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+        }*/
+
+</script>
+<style>
+    ::-webkit-scrollbar {
+        width: 12px;
+        background: #353b45;
+
+    }
+
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+        background: linear-gradient(to right, #353b45, #ffb22b, #353b45);
+    }
+</style>
+
+<!-- Insert this line after script imports -->
+<script>if (window.module) module = window.module;</script>
+
+</body>
+
+</html>

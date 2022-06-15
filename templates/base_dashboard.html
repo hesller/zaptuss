@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/assets/images/favicon.png">
+    <title>ZAPTUSS - Envio em Massa no Whatsapp</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/assets/plugins/dropify/dist/css/dropify.min.css">
+    <!-- Custom CSS -->
+    <link href="../static/css/style.css" rel="stylesheet">
+    <!-- colors -->
+    <!-- You can change the theme colors from here -->
+    <link href="../static/css/colors/megna-dark.css" id="theme" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+    <script>
+        window.nodeRequire = require;
+        delete window.require;
+        delete window.exports;
+        delete window.module;
+    </script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body class="fix-header card-no-border">
+<!-- ============================================================== -->
+<!-- Preloader - style you can find in spinners.css -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<div id="">
+    <!-- ============================================================== -->
+    <!-- Page wrapper  -->
+    <!-- ============================================================== -->
+    <div class="" style="background-color: #383f48">
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="row page-titles">
+                <div class="col-md-6 col-6 align-self-center">
+                    <h3 class="text-themecolor m-b-0 m-t-0">Dashboard</h3>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                </div>
+                <div class="col-md-6 col-6 justify-content-end">
+                    <div class="d-flex m-t-10 justify-content-end">
+                        <div class="d-flex m-r-20 m-l-10 hidden-md-down">
+                            <div class="chart-text m-r-10">
+                                <h6 class="m-b-0"><small>Plano</small></h6>
+                                <h4 class="m-t-0 text-warning" id="plan-name"></h4></div>
+                        </div>
+                        <div class="d-flex m-r-20 m-l-10 hidden-md-down">
+                            <div class="chart-text m-r-10">
+                                <h6 class="m-b-0"><small>Envios</small></h6>
+                                <h4 class="m-t-0 text-info" id="plan-sent"></h4></div>
+                            <div class="spark-chart">
+                                <div id="monthchart"></div>
+                            </div>
+                        </div>
+                        <div class="d-flex m-r-20 m-l-10 hidden-md-down">
+                            <div class="chart-text m-r-10">
+                                <h6 class="m-b-0"><small>Restante</small></h6>
+                                <h4 class="m-t-0 text-primary" id="plan-left"></h4></div>
+                            <div class="spark-chart">
+                                <div id="lastmonthchart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Start Page Content -->
+            <!-- ============================================================== -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group justify-content-start container-fluid col-lg-6 col-md-6 col-sm-6">
+                            <p class="text text-themecolor">Cliente: </p>
+                            <input data-location="" id="id-client" class="form-control" type="text" name="interval_max"
+                                   required="" placeholder="Digite o nome do Cliente..." data-section="1">
+                        </div>
+                        <div class="form-group justify-content-start container-fluid col-lg-6 col-md-6 col-sm-6">
+                            <p class="text text-themecolor">Campanha: </p>
+                            <input data-location="" id="id-campaign" class="form-control" type="text"
+                                   name="interval_max" required="" placeholder="Campanha de Marketing..."
+                                   data-section="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card ">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12 justify-content-start">
+                            <h4 class="card-title text-themecolor">Robôs do Whatsapp</h4>
+                        </div>
+
+                        <div class="row container-fluid">
+                            <label class="col-lg-8 col-md-8 col-sm-8  col-xl-8">Necessário 1 chip cadastrado no Whatsapp
+                                para iniciar cada robô</label>
+                            <div class=" col-lg-4 col-md-4 col-sm-4  col-xl-4 row justify-content-end">
+
+                                <button class="btn  btn-outline-success"
+                                        type="submit"
+                                        id='id_add_section'
+                                        data-addSectionButton-section="1"
+                                        name="add_section"
+                                        value="add" style="height: 33px">Adicionar
+                                </button>
+
+                                <button class="btn btn-outline-danger m-l-10 m-r-20"
+                                        type="submit"
+                                        name='remove_section'
+                                        id="id_remove_section"
+                                        data-removeSectionButton-section="1"
+                                        value="remove" style="height: 33px">Remover
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <! -- SECTIONS -->
+                    <!-- NAV TABS -->
+                    <div class="tabs tabs-section container " id='id_tabs_section'>
+                        <ul class="nav nav-tabs" role="tablist" id='id_nav_tabs_section' data-navTabHolder-section="1">
+                            <li class="nav-item section-tab-item" data-section="1">
+                                <a class="nav-link nav-link-section active" data-toggle="tab" data-for-section-tab="1"
+                                   data-section="1"
+                                   data-messageTab-section="1" id="st-1"
+                                   href="#home" role="tab">
+                                    <span class="hidden-sm-up"><i class="ti-home"></i></span>
+                                    <span class="hidden-xs-down">Robô 1</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <! -- SECTIONS -->
+                        <!-- TAB PANES -->
+                        <div class="tab-content tabcontent-border" id="id_section_content_holder">
+                            <div class="tab-pane tab-pane-sections active" data-section="1"
+                                 id="sp-1" role="tabpanel">
+                                <div class=" row p-10 d-flex justify-content-around p-r-20">
+                                    <!-- start top row -->
+                                    <div class="col-md-12">
+                                        <!-- ============================================================== -->
+                                        <!--  MESSAGES CARD -->
+                                        <!-- ============================================================== -->
+                                        <div class="card messages-card-honeycomb">
+                                            <img class="card-img-top honeycomb honeycomb-top-right"
+                                                 src="../static/assets/images/gold_honeycomb_top_right.png"
+                                                 alt="Card image">
+                                            <div class="card-body card-img-overlay">
+                                                <div class="row">
+                                                    <div class="col-lg-12 justify-content-start">
+                                                        <h4 class="card-title text-themecolor">Mensagens</h4>
+                                                    </div>
+                                                    <div class="col-lg-12 justify-content-end">
+                                                        <div class="row justify-content-end">
+                                                            <!-- add message -->
+                                                            <button class="btn btn-outline-success add-message"
+                                                                    type="submit"
+                                                                    id='id-add-message-s-1'
+                                                                    data-section="1"
+                                                                    name="add_message">Adicionar
+                                                            </button>
+                                                            <!-- remove section -->
+                                                            <button class="btn btn-outline-danger m-l-10 m-r-20 remove-message"
+                                                                    type="submit"
+                                                                    data-section="1"
+                                                                    name='remove_message'
+                                                                    id="id-remove-message-s-1">Remover
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- TABS AND TAB CONTAINER -->
+                                                <div class="tabs tabs-msg container " id='id_tabs-msg'>
+                                                    <ul class="nav nav-tabs" role="tablist" id='id_nav_tabs'
+                                                        data-navTabHolder-message="1" data-section="1">
+                                                        <li class="nav-item message-tab-item" data-section="1">
+                                                            <a class="nav-link nav-link-msg active" data-toggle="tab"
+                                                               data-for-tab="1"
+                                                               data-section="1"
+                                                               data-messageTab-section="1" id="1"
+                                                               href="#home" role="tab">
+                                                                <span class="hidden-sm-up"><i
+                                                                        class="ti-home"></i></span>
+                                                                <span class="hidden-xs-down">M1</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                    <!-- Tab panes -->
+                                                    <div class="tab-content tabcontent-border" id="id_content_holder"
+                                                         data-section="1">
+                                                        <div class="tab-pane tab-pane-msg active" data-id='1'
+                                                             data-section="1"
+                                                             id="1"
+                                                             data-messagePane-section="1" role="tabpanel">
+                                                            <div class=" row p-10 d-flex justify-content-around p-r-10">
+                                                                <!-- start top row -->
+                                                                <textarea name="msg_area" cols="40" rows="12"
+                                                                          class="form-control col-lg-11 m-l-30 msg-area-content"
+                                                                          required=""
+                                                                          id="id_msg_area_1"
+                                                                          data-section="1"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ============================================================== -->
+                                        <!-- FILE INPUT CARD -->
+                                        <!-- ============================================================== -->
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="card attachimage-card-honeycomb">
+                                                    <img class="card-img-top honeycomb honeycomb-down-left-small"
+                                                         src="../static/assets/images/gold_honeycomb_down_left.png"
+                                                         alt="Card image">
+                                                    <div class="card-body card-img-overlay container-fluid p-t-20">
+                                                        <h4 class="card-title text-themecolor">Anexar Imagem</h4>
+                                                        <label for="input-file-now">Escolha uma imagem para enviar com a
+                                                            mensagem</label>
+                                                        <input type="file" id="input-file-now"
+                                                               class="dropify image-input"
+                                                               data-allowed-file-extensions="jpeg jpg png JPEG JPG PNG"
+                                                               data-max-file-size="3M"
+                                                               data-section="1"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-lg-6">
+                                                <div class=" card imagecaption-card-honeycomb">
+                                                    <img class="card-img-top honeycomb honeycomb-down-right-small"
+                                                         src="../static/assets/images/gold_honeycomb_down_right.png"
+                                                         alt="Card image">
+                                                    <div class="card-body card-img-overlay">
+                                                        <h4 class="card-title text-themecolor">Legenda</h4>
+                                                        <label>Se desejar incluir uma lengenda para imagem digite
+                                                            abaixo.
+                                                            (opcional)</label>
+                                                        <textarea name="image_caption" cols="40" rows="9"
+                                                                  class="form-control col-lg-auto"
+                                                                  required=""
+                                                                  id="id_image_caption"
+                                                                  placeholder="Digite aqui..."
+                                                                  data-section="1"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- ============================================================== -->
+                                        <!-- CONTACTS LIST CARD-->
+                                        <!-- ============================================================== -->
+                                        <form class="form-material">
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="card card-honeycomb">
+                                                        <img class="card-img-top honeycomb honeycomb-top-left-small"
+                                                             src="../static/assets/images/gold_honeycomb_top_left.png"
+                                                             alt="Card image">
+                                                        <div class="card-body card-img-overlay">
+                                                            <h4 class="card-title text-themecolor">Contatos</h4>
+                                                            <div class="bootstrap-table">
+                                                                <div class="fixed-table-container m-t-20"
+                                                                     style="height: 250px; ">
+                                                                    <table class="table-hover table">
+                                                                        <thead class="justify-content-around">
+                                                                        <tr class="justify-content-around">
+                                                                            <form class="form-material">
+                                                                                <th><input
+                                                                                        class="form-control"
+                                                                                        id="input-contact-name"
+                                                                                        data-section="1" placeholder="Nome">
+                                                                                </th>
+                                                                                <th><input
+                                                                                        class="form-control"
+                                                                                        id="input-contact-number"
+                                                                                        data-section="1"
+                                                                                        placeholder="Número">
+                                                                                </th>
+                                                                                <th><button class="btn btn-outline-success"
+                                                                                            id="btn-input-add"
+                                                                                            type="button"
+                                                                                            data-section="1">
+                                                                                    <i class="ti-plus"></i></button>
+                                                                                </th>
+                                                                            </form>
+                                                                        </tr>
+                                                                        </thead>
+                                                                    </table>
+                                                                    <div class="fixed-table-body"
+                                                                         style="position: relative; height: 180px; overflow: auto; display: block;">
+                                                                        <table class="table table-hover "
+                                                                               data-toggle="table" data-height="100"
+                                                                               data-sort-order="desc"
+                                                                               data-mobile-responsive="true">
+                                                                            <tbody id='id_table_holder'
+                                                                                   data-section="1">
+
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Importar Contatos</label>
+                                                                <div class="fileinput fileinput-new input-group"
+                                                                     data-provides="fileinput">
+                                                                    <div class="form-control" data-trigger="fileinput">
+                                                                        <i
+                                                                                class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                                        <span
+                                                                                class="fileinput-filename"
+                                                                                id="id_contact_list"></span></div>
+                                                                    <span class="input-group-addon btn btn-default btn-file"> <span
+                                                                            class="fileinput-new ">Selecionar</span> <span
+                                                                            class="fileinput-exists text-success">Adicionar</span>
+                                            <input type="hidden" id="id_input_hidden_csv">
+                                            <input class="input-csv" type="file" id="id_input_csv" accept=".csv"
+                                                   name="..."
+                                                   data-allowed-file-extensions="csv"
+                                                   data-section="1"> </span>
+                                                                    <a href="#" id="id-remove-file"
+                                                                       class="input-group-addon btn btn-default fileinput-exists text-danger"
+                                                                       data-dismiss="fileinput">Limpar Lista</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- ============================================================== -->
+                                                <!-- SETTINGS CARD-->
+                                                <!-- ============================================================== -->
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="card card-honeycomb" style="height: 454px">
+                                                        <img class="card-img-top honeycomb honeycomb-top-right-small"
+                                                             src="../static/assets/images/gold_honeycomb_top_right.png"
+                                                             alt="Card image">
+                                                        <div class="card-body card-img-overlay container-fluid m-t-20">
+                                                            <form class="form-material">
+                                                                <h4 class="card-title text-themecolor">
+                                                                    Configurações</h4>
+                                                                <label class="card-title">Defina o Intervalo entre
+                                                                    Mensagens</label>
+                                                                <div class="row form-group justify-content-start">
+                                                                    <p class="text text-themecolor">Mínimo: </p>
+                                                                    <input id="id_delay_min"
+                                                                           class="form-control "
+                                                                           type="text" name="interval_min" required=""
+                                                                           placeholder="60" value="60"
+                                                                           data-section="1">
+
+                                                                    <p>segundos</p>
+                                                                </div>
+                                                                <div class="row form-group justify-content-start">
+                                                                    <p class="text text-themecolor">Máximo: </p>
+                                                                    <input data-location="" id="id_delay_max"
+                                                                           class="form-control"
+                                                                           type='text' name="interval_max"
+                                                                           required=""
+                                                                           placeholder="180" value="180"
+                                                                           data-section="1">
+                                                                    <p>segundos</p>
+                                                                </div>
+                                                                <p class="text text-themecolor" style="margin-left: -10px">Envio duplo com prefixo 9?</p>
+                                                                <div class=" form-group justify-content-start">
+                                                                    <input type="checkbox"
+                                                                           id="nine_checkbox"
+                                                                           data-section="1"
+                                                                           name="'nine"
+                                                                           class="filled-in chk-col-orange" >
+                                                                    <label for="nine_checkbox">Por padrão deixe esta opção desativada!
+                                                                        Ative somente quando os envios são feitos para números obtidos
+                                                                        a partir da ferramenta "Gerador de Números".</label>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <div class="container-fluid justify-content-center"
+                                                         style="display: flex; align-items: center; justify-content: center;">
+                                                        <button data-action="send_message" id='id-send-btn-1'
+                                                                class="btn btn-warning btn-send-message m-b-30"
+                                                                style="width: 100%;" data-section="1">
+                                                            <i class="fa fa-send fa-lg p-10"> Iniciar Robô</i>
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- ============================================================== -->
+                                        <!-- LOGS -->
+                                        <!-- ============================================================== -->
+                                        <div class="logs card">
+                                            <h3 class="card-title text-themecolor p-l-20 p-t-20">Status</h3>
+                                            <p class="p-l-20">Acompanhe o status do envio de cada mensagem</p>
+                                            <div class="card-body status-body">
+                                                <div class="bootstrap-table">
+                                                    <div class="fixed-table-container m-t-20"
+                                                         style="height: 250px; ">
+                                                        <table class="table-hover table">
+                                                            <thead class="justify-content-around">
+                                                            <tr class="justify-content-around">
+                                                                <th><h5 class="text-themecolor">Número</h5>
+                                                                </th>
+                                                                <th><h5 class="text-themecolor">Status</h5>
+                                                                </th>
+                                                            </tr>
+                                                            </thead>
+                                                        </table>
+                                                        <div class="fixed-table-body"
+                                                             style="position: relative; height: 180px; overflow: auto; display: block;">
+                                                            <table class="table table-hover "
+                                                                   data-toggle="table" data-height="100"
+                                                                   data-sort-order="desc"
+                                                                   data-mobile-responsive="true">
+                                                                <tbody id='id-status-table'
+                                                                       data-section="1">
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End PAge Content -->
+            <!-- ============================================================== -->
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End footer -->
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<script>if (typeof module === 'object') {
+    window.module = module;
+    module = undefined;
+}
+</script>
+<script src="../static/assets/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="../static/assets/plugins/bootstrap/js/popper.min.js"></script>
+<script src="../static/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="../static/js/jquery.slimscroll.js"></script>
+<!--Wave Effects -->
+<script src="../static/js/waves.js"></script>
+<!--Menu sidebar -->
+<script src="../static/js/sidebarmenu.js"></script>
+<!--stickey kit -->
+<script src="../static/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+<script src="../static/assets/plugins/sparkline/jquery.sparkline.min.js"></script>
+<!--Custom JavaScript -->
+<script src="../static/js/custom.min.js"></script>
+<!-- ============================================================== -->
+<!-- Plugins for this page -->
+<!-- ============================================================== -->
+<!-- jQuery file upload -->
+<script src="../static/assets/plugins/dropify/dist/js/dropify.min.js"></script>
+<!-- ============================================================== -->
+<!-- This page plugins -->
+<!-- ============================================================== -->
+<script src="../static/js/jasny-bootstrap.js"></script>
+<!-- ============================================================== -->
+<!-- Style switcher -->
+<!-- ============================================================== -->
+<script src="../static/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+<!-- ============================================================== -->
+<!-- Style switcher -->
+<!-- ============================================================== -->
+<script src="../static/assets/plugins/bootstrap-switch/bootstrap-switch.min.js"></script>
+<script src="../static/js/baseDashboard.js"></script>
+<script type="text/javascript">
+    $(document).ready(() => {
+        // =========================================
+        //      GLOBAL VARIABLES
+        // =========================================
+
+        const Swal = nodeRequire("sweetalert2");
+        const QRcode = nodeRequire("qrcode");
+        const {Menu, MenuItem} = nodeRequire("electron").remote;
+        const {ipcRenderer} = nodeRequire("electron");
+        const hp = nodeRequire("../static/js/helpers.js");
+        const hp_eng = nodeRequire("../resources/engine/helpers.js");
+        const menu = new Menu();
+        var currUser = null;
+        var limitData;
+        var messages = {};
+        var image_path = null;
+        var image_caption = null;
+        var delay_min = 60; // seconds
+        var delay_max = 120; // seconds
+        var typing_mode;
+        var sectionName;
+        var nineCheckbox;
+
+        ipcRenderer.send("grab-user", 'grab him!');
+
+        ipcRenderer.on("got-user", (event, args) => {
+            currUser = args
+            hp.buildMenu(menu, currUser);
+            displayPlanInfo(currUser);
+            limitData = limitSendButton(currUser);
+        })
+
+        ipcRenderer.on("update-message-counts", (event, args) => {
+            currUser['plan']['messages_sent'] = args;
+            displayPlanInfo(currUser);
+        })
+
+        ipcRenderer.on("message-limit-reached", (event, args) => {
+            currUser['plan']['messages_sent'] = args;
+            displayPlanInfo(currUser);
+
+            Swal.fire({
+                title: "Limite de Mensagem Alcançado",
+                text: "O limite de mensagens para o seu plano foi alcançado. " +
+                    "Para continuar a enviar mensagens é preciso fazer o upgrade ou adquirir um novo plano",
+                icon: 'error'
+            });
+        });
+
+        // =======================================================
+        //      list messages in the status table
+        ipcRenderer.on(`list-messages`, (event, arg) => {
+            let section = getSectionName();
+            feedbackToUser(arg, section);
+        });
+
+        // =========================================
+        //      START SESSION HANDLER
+        // =========================================
+        function sendBtnListener(event) {
+            event.preventDefault();
+
+            // create the variables
+            let contacts = {};
+            let currSection = $(this).attr("data-section");
+
+            // set the current section variable
+            sectionName = `sessao-${currSection}`;
+
+            // -------------------------------
+            //      get messages
+            $(`.msg-area-content[data-section='${currSection}']`).each((idx, text) => {
+                messages[`${idx}`] = text.value
+            });
+
+            // -------------------------------
+            //      get contacts
+            $(`.contact-phone-number[data-section='${currSection}']`).each((idx, elem) => {
+                contacts[`${idx}`] = $(elem).text()
+            });
+
+            // -------------------------------
+            //   get checkbox with/without 9
+            nineCheckbox = $(`input#nine_checkbox[data-section='${currSection}']`).prop("checked");
+
+            // -------------------------------
+            //      get clientinfo
+            var currClient = $("#id-client").val();
+            var currCampaign = $("#id-campaign").val();
+            const clientData = {};
+            clientData['clientName'] = currClient.toString();
+            clientData['campaign'] = currCampaign.toString();
+
+            // -------------------------------
+            //      get settings
+            delay_min = $(`input#id_delay_min[data-section='${currSection}']`).val();
+            delay_max = $(`input#id_delay_max[data-section='${currSection}']`).val();
+            typing_mode = $(`select#inlineFormCustomSelect[data-section='${currSection}']`).val();
+
+
+            // -------------------------------
+            //      get image caption
+            image_caption = $(`textarea[name='image_caption'][data-section='${currSection}']`).val();
+
+
+            // -------------------------------
+            //      get image caption
+            try {
+                image_path = $(`input.image-input[data-section='${currSection}']`)[0].files[0].path;
+            } catch (e) {
+                image_path = null
+            }
+
+
+            // -------------------------------
+            //      check if user can send messages
+            //  TODO: get info from api to see if the user
+            // is active and monthly
+            // signature did not expires.
+            // -------------------------------
+            //      Make some verifications
+            //  and start the bot
+            let devMode = hp_eng.getDevMode();
+            if (Object.values(messages).includes("") || Object.values(messages).includes(undefined)) {
+                Swal.fire({
+                    title: "Erro",
+                    text: "Campo mensagem não pode estar vazio.",
+                    icon: "error"
+                })
+            } else if ( Object.values(contacts).length === 0) {
+                Swal.fire({
+                    title: "Erro",
+                    text: "Campo Contatos não pode estar vazio.",
+                    icon: "error"
+                })
+            } else if (Object.values(contacts).includes("") || Object.values(contacts).includes(undefined)) {
+                Swal.fire({
+                    title: "Erro",
+                    text: "Campo Contatos possui valores não reconhecidos pelo sistema. " +
+                        "Por favor, verifique o arquivo de contatos que você fez o upload. " +
+                        "O arquivo precisa ser no formato .csv e cada linha deve seguir o exemplo: " +
+                        "nome, número_de_telefone",
+                    icon: "error"
+                })
+            } else if (parseInt(delay_min) > parseInt(delay_max)) {
+                Swal.fire({
+                    title: "Erro",
+                    text: "Erro ao configurar o Intervalor Entre Mensagens. O Valor Mínimo do intervalor" +
+                        " deve ser MENOR que o Valor Máximo do intervalo entre as mensagens.",
+                    icon: "error"
+                })
+            } else if ( devMode === false && delay_min < 30) {
+                Swal.fire({
+                    title: "Erro",
+                    text: "Erro ao configurar o Intervalor Entre Mensagens. O valor mínimo tem de ser maior que 30. " +
+                        "Por favor, mude o Valor Minímo do intervalo e tente novamente.",
+                    icon: "error"
+                })
+            } else {
+                requireQRCode(contacts, messages, delay_min, delay_max, image_path, image_caption, typing_mode, sectionName, clientData, nineCheckbox)
+            }
+        }
+
+        // =========================================
+        //      GENERATE QR CODE
+        // =========================================
+        async function requireQRCode(contacts, messages, delay_min, delay_max, image_path, image_caption, typing_mode, sectionName, clientData, nineCheckbox) {
+            // import statements
+            var myInterval;
+            var dataReceived = {qrCode: '', isQRCodeReceived: false, isLoggedIn: false};
+            var dataReceivedProxy = new Proxy(dataReceived, {
+                set: (o, property, value) => {
+                    o[property] = value;
+                },
+                get: (o, property) => {
+                    return property in o ? o[property] : 'property not in object'
+                },
+
+            });
+
+
+            const {value: qrCode} = await Swal.queue([{
+                title: 'QRCode',
+                confirmButtonText: 'Iniciando Robô...',
+                html:
+                    `<p>Clique no botão abaixo para iniciar a campanha:
+                <h3 style="color: #0b0b0b">${clientData['campaign']}</h3>
+                do cliente:
+                <h3 style="color: #0b0b0b">${clientData['clientName']}</h3></p>`,
+                showLoaderOnConfirm: true,
+                //html: `<canvas id="somecanvas"></canvas>`,
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                preConfirm: () => {
+                    return new Promise((resolve, reject) => {
+                        // ================================
+                        //      wait user to logging the qrcode
+                        Swal.fire({
+                            title: 'Gerando QRCode !',
+                            html: 'Estabelecendo conexão...',// add html attribute if you want or remov
+                            onBeforeOpen: () => {
+                                Swal.showLoading();
+                            },
+                        });
+
+                        // TODO check if this information will conflict with other sections
+                        setSectionName(sectionName);
+
+                        ipcRenderer.send('asynchronous-message', [
+                            contacts,
+                            messages,
+                            delay_min,
+                            delay_max,
+                            image_path,
+                            image_caption,
+                            typing_mode,
+                            [sectionName, nineCheckbox],
+                            clientData,
+                        ])
+                    }).then(response => {
+                        //appendSection()
+                    })
+                },
+                onClose: () => {
+                    clearInterval(myInterval)
+                }
+            }]);
+        }
+
+        function feedbackToUser(arg, sectionName) {
+
+            if (arg['type'] === 1) {
+                // show the qr code in Sweet Alert
+                Swal.fire({
+                    title: "Seu QrCode!",
+                    text: "Por favor, Escaneei o código utilzando seu Whatsapp!",
+                    html: `<canvas id="somecanvas"></canvas>`
+                });
+
+                // Get the canvas id and use QRCode to display in it
+                var canvas = document.getElementById("somecanvas");
+                QRcode.toCanvas(canvas, arg['qrcode'], function (error) {
+                    if (error) console.error(error);
+                });
+            } else if (arg['type'] === 2) {
+                // show the user the process has finished
+                Swal.fire({
+                    title: `${arg['section']} finalizado!`,
+                    text: `Processo de envios da ${arg['section']} foi finalizado com sucesso!`,
+                    icon: "success"
+                });
+            } else if (arg['type'] === 3) {
+                // show the user there was a erro during qrcode scan
+                Swal.fire({
+                    title: "Algo saiu errado!",
+                    text: "Por favor, Escaneei o código utilzando seu Whatsapp!",
+                    icon: "error"
+                });
+            } else if (arg['type'] === 4) {
+                // show the user it is sending messages
+                Swal.fire({
+                    title: 'Enviando!',
+                    html: 'Enviando mensagens. Aguarde...',// add html attribute if you want or remov
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        Swal.showLoading()
+                    },
+                    timer: 3000
+                });
+            } else if (arg['type'] === 5) {
+                // message received from every contact sent
+                attachSendingRow();
+            } else if (arg['type'] === 6) {
+                // message received from every contact sent
+                attachSuccessRow();
+            } else if (arg['type'] === 10) {
+                // show the user there was a erro during qrcode scan
+                Swal.fire({
+                    title: "Algo saiu errado!",
+                    text: `${arg['error']}`,
+                    icon: "error"
+                });
+            }
+
+            function attachSendingRow() {
+                let currSection = arg['section']
+                let lastChar = currSection.substr(currSection.length - 1); // => "1"
+                let tableHolder = $(`#id-status-table[data-section='${lastChar}']`)
+                tableHolder.append(`
+                    <tr class="contact-row" data-section="${lastChar}">
+                        <td><h6 class="status-contact"
+                                data-section="${lastChar}">${arg['number']}</h6></td>
+                        <td>
+                            <h6 class="status-contact-phone-number"
+                                data-section="${lastChar}">${arg['message']} </h6>
+                        </td>
+                    </tr>
+                `);
+            }
+
+            function attachSuccessRow() {
+                let currSection = arg['section']
+                let lastChar = currSection.substr(currSection.length - 1); // => "1"
+                let tableHolder = $(`#id-status-table[data-section='${lastChar}']`)
+                tableHolder.append(`
+                    <tr class="contact-row" data-index="${idx}" data-section="${lastChar}">
+                        <td><h6 class="status-contact"
+                                data-section="${lastChar}">${arg['number']}</h6></td>
+                        <td>
+                            <h6 class="status-contact-phone-number text-success"
+                                data-section="${lastChar}">${arg['message']}</h6>
+                        </td>
+                    </tr>
+                `);
+            }
+        }
+
+        // =========================================
+        //      HANDLE IMAGE FILE PATH
+        // =========================================
+        function imageFilePathListener(event) {
+            var reader = new FileReader();
+            reader.onload = imageIsLoaded;
+            reader.readAsDataf(this.files[0]);
+
+            function imageIsLoaded(e) {
+                image_path = e.target.result;
+            }
+        }
+
+        function dropifyListener() {
+            // Basic
+            $('.dropify').dropify();
+
+            // Translated
+            $('.dropify-fr').dropify({
+                messages: {
+                    default: 'Arquivo',
+                    replace: 'Mudar',
+                    remove: 'Remover',
+                    error: 'Erro'
+                }
+            });
+
+            // Used events
+            var drEvent = $('#input-file-events').dropify();
+
+            drEvent.on('dropify.beforeClear', function (event, element) {
+                return confirm("Você realmente deseja deletar o aquivo \"" + element.file.name + "\" ?");
+            });
+
+            drEvent.on('dropify.afterClear', function (event, element) {
+                alert('arquivo deletado');
+            });
+
+            drEvent.on('dropify.errors', function (event, element) {
+                console.log('Has Errors');
+            });
+
+            var drDestroy = $('#input-file-to-destroy').dropify();
+            drDestroy = drDestroy.data('dropify')
+            $('#toggleDropify').on('click', function (e) {
+                e.preventDefault();
+                if (drDestroy.isDropified()) {
+                    drDestroy.destroy();
+                } else {
+                    drDestroy.init();
+                }
+            })
+        }
+
+        // =========================================
+        //      IMPORT CONTACT LIST
+        // =========================================
+        async function inputContactListener(e) {
+            // section values
+            let currSection = $(this).attr("data-section");
+            // declare variable tables
+            var contactList = document.querySelectorAll(`.table-row-contact[data-section='${currSection}']`);
+            let lastElement = $(`#id_table_holder[data-section='${currSection}'] tr:last`);
+            let lastIdx = $(lastElement).attr("data-index");
+
+            if (lastIdx === undefined) {
+                lastIdx = 0;
+            }
+            sleep(1000).then(value => {
+                var fileInput = document.querySelector(`.input-csv[data-section='${currSection}']`);
+                var reader = new FileReader();
+                reader.onload = function () {
+                    // get the table
+                    var tableHolder = $(`#id_table_holder[data-section='${currSection}']`);
+
+                    // the contact list
+                    contactList = csvJSON(reader.result);
+
+                    var lines = reader.result.split('\n');
+
+                    for (idx in lines) {
+                        if (idx >= 1 && idx < lines.length - 1) {
+                            var lines_splited = lines[idx].split(',');
+                            var phone_number = lines_splited[1].replace(/\D/g, '');
+
+                            // update the current index
+                            let currIdx = parseInt(lastIdx) + parseInt(idx);
+
+                            tableHolder.append(`
+                            <tr class="contact-row" data-index="${currIdx}" data-section="${currSection}">
+                                <td><h6 class="contact-name"
+                                        id="id_contact_name_${currIdx}"
+                                        data-section="${currSection}">${lines_splited[0]}</h6></td>
+                                <td>
+                                    <h6 class="contact-phone-number"
+                                        id="id_contact_phone_number_${currIdx}"
+                                        data-section="${currSection}">${phone_number}</h6>
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-danger"
+                                            id="btn-input-remove"
+                                            type="button"
+                                            data-index="${currIdx}"
+                                            data-section="${currSection}">
+                                    <i class="ti-trash"></i></button>
+                                </td>
+                            </tr>
+                            `);
+                        }
+                    }
+                };
+                reader.onloadend = function () {
+                    $(`button#btn-input-remove[data-section='${currSection}']`).on("click", function(event) {
+                        event.preventDefault();
+
+                        // get the current index and section
+                        let idx = $(this).attr("data-index");
+                        let section = $(this).attr("data-section");
+
+                        // remove the current line
+                        $(`tr[data-index=${idx}][data-section='${section}']`).remove();
+                    });
+                }
+                try {
+                    // read contact list .csv as binary
+                    reader.readAsBinaryString(fileInput.files[0]);
+
+                } catch {
+                    // report the error
+                    console.log("cant read file")
+                }
+            });
+        }
+        addListenerToManualInput();
+
+        function addListenerToManualInput() {
+            $(`button#btn-input-add[data-section='1']`).on("click", function(e) {
+                let section = $(this).attr("data-section");
+                let name = $(`#input-contact-name[data-section='${section}']`).val();
+                let number = $(`#input-contact-number[data-section='${section}']`).val();
+                let tableHolder = $(`#id_table_holder[data-section='${section}']`);
+                let lastElement = $(`#id_table_holder[data-section='${section}'] tr:last`);
+                let lastIdx = $(lastElement).attr("data-index");
+                if (lastIdx === undefined) {
+                    lastIdx = 0;
+                }
+                let currIdx = parseInt(lastIdx) + 1;
+
+                // heck if some field is empty
+                if (number === '' || name === '') {
+                    Swal.fire({
+                        title: "Erro",
+                        text: "Você deve prencher o campo NOME e NUMERO.",
+                        icon: 'error'
+                    });
+                } else {
+                    // add elements to the table
+                    tableHolder.append(`
+                            <tr class="contact-row" data-index="${currIdx}" data-section="${section}">
+                                <td><h6 class="contact-name"
+                                        id="id_contact_name_${currIdx}"
+                                        data-section="${section}">${name}</h6></td>
+                                <td>
+                                    <h6 class="contact-phone-number"
+                                        id="id_contact_phone_number_${currIdx}"
+                                        data-section="${section}">${number}</h6>
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-danger"
+                                            id="btn-input-remove"
+                                            type="button"
+                                            data-index="${currIdx}"
+                                            data-section="${section}">
+                                    <i class="ti-trash"></i></button>
+                                </td>
+                            </tr>
+                            `);
+
+                    // add the listener to the table
+                    $(`button#btn-input-remove[data-section='${section}'][data-index='${currIdx}']`).on("click", function(event) {
+                        event.preventDefault();
+                        let idx = $(this).attr("data-index");
+                        let section = $(this).attr("data-section");
+                        $(`tr[data-index=${idx}][data-section='${section}']`).remove();
+                    });
+                }
+
+            });
+        }
+
+
+        // =========================================
+        //      CLEAR CONTACT LIST
+        // =========================================
+        $('a#id-remove-file').on("click", function (e) {
+            e.preventDefault()
+            var tableHolder = $("#id_table_holder");
+            tableHolder.empty();
+        });
+
+        // ======================================
+        //      HANDLE IMAGE FILE
+        // ======================================
+        $(".btn-file-imagefile").on(`click`, (e) => {
+            e.preventDefault();
+            const filters = [
+                {name: 'Images', extensions: ['jpg', 'png', "jpeg", 'JPEG', 'JPG', 'PNG']},
+            ]
+
+            dialog.showOpenDialog({
+                buttonLabel: "Selecionar Imagem",
+                properties: ["openFile"],
+                filters: filters
+            }, (openPath) => {
+
+            }).then(result => {
+                image_path = result.filePaths[0]
+                $("span#id_grab_file").text(`${result.filePaths[0]}`)
+            })
+        });
+
+        // ========================================
+        //     ADD AND REMOVE MESSAGES
+        // =========================================
+        const handleListeners = () => new Promise((resolve, reject) => {
+
+            $(".add-message").each((index, elem) => {
+                $(elem).off("click", addMessageBtnListener)
+            });
+            $(".remove-message").each((index, elem) => {
+                $(elem).off("click", removeMessageBtnListener);
+            });
+            $(".input-csv").each((index, elem) => {
+                $(elem).off("change", inputContactListener);
+            });
+            $("button[data-action='send_message']").each((index, elem) => {
+                $(elem).off("click", sendBtnListener);
+            });
+            resolve("listeners removed")
+        })
+            .then(result => {
+                $(".add-message").each((index, elem) => {
+                    $(elem).on("click", addMessageBtnListener)
+                });
+                $(".remove-message").each((index, elem) => {
+                    $(elem).on("click", removeMessageBtnListener)
+                });
+                $(".input-csv").each((index, elem) => {
+                    $(elem).on("change", inputContactListener)
+                });
+                $("button[data-action='send_message']").each((index, elem) => {
+                    $(elem).on("click", sendBtnListener);
+                });
+            });
+
+        function handleButtonAddRemove() {
+            document.querySelectorAll(".nav-link-msg").forEach(navLink => {
+                navLink.addEventListener('click', () => {
+                    const listItem = navLink.parentElement;
+                    const navBar = listItem.parentElement;
+                    const tabContainer = navBar.parentElement;
+
+                    const tabNumber = navLink.dataset.forTab;
+                    const selectedContentTab = tabContainer.children[1];
+                    const tabToActivate = selectedContentTab.querySelectorAll(`.tab-pane-msg[data-id="${tabNumber}"]`);
+
+                    navBar.querySelectorAll('.nav-item').forEach(listItem => {
+                        listItem.querySelector('.nav-link-msg').classList.remove('active')
+                    });
+                    selectedContentTab.querySelectorAll('.tab-pane').forEach(tabLinks => {
+                        tabLinks.classList.remove('active');
+                    });
+
+                    navLink.classList.add('active');
+                    tabToActivate[0].classList.add('active');
+                }, {passive: true})
+            })
+        }
+
+        function addMessageBtnListener() {
+
+            var currSection = $(this).attr("data-section");
+
+            var tabsList = document.querySelectorAll(`.message-tab-item[data-section='${currSection}']`);
+            var tabCounter = tabsList.length;
+            var tabsHolder = $(`ul#id_nav_tabs[data-section='${currSection}']`);
+            var messageTabHtml = addMessageTab(tabCounter, currSection);
+
+            // -------- add new tab to the list -------------
+            tabsHolder.append(`${messageTabHtml}`);
+
+            // -------- add new content to the list ---------
+            var contentList = document.querySelectorAll(`.tab-pane-msg[data-section='${currSection}']`);
+            var contentCounter = contentList.length;
+            var contentHolder = $(`#id_content_holder[data-section='${currSection}']`);
+            var messageContentHtml = addMessageContent(contentCounter, currSection);
+
+            contentHolder.append(`${messageContentHtml}`);
+            handleButtonAddRemove();
+        }
+
+        function removeMessageBtnListener() {
+            event.preventDefault();
+
+            var tabsList = $(".message-tab-item");
+            var contentList = $(".tab-pane");
+
+            if (tabsList.length === 1) {
+
+            } else {
+                var lastTab = tabsList.last();
+                var lastContent = contentList.last();
+                lastTab.addClass('animate__animated').addClass('animate__zoomOut');
+                setTimeout(() => {
+                    lastTab.remove()
+                }, 300);
+                lastContent.addClass('animate__animated').addClass('animate__zoomOut');
+                setTimeout(() => {
+                    lastContent.remove()
+                }, 300);
+            }
+        }
+
+        // ==========================================
+        //      SECTIONS
+        $("#id_add_section").on("click", function (e) {
+            e.preventDefault();
+
+            var tabsList = document.querySelectorAll(".section-tab-item");
+            var tabCounter = tabsList.length;
+            var tabsHolder = $("#id_nav_tabs_section");
+
+            if (tabCounter < limitData['filteredMaxTabs']) {
+
+                // add new tab to the list
+                tabsHolder.append(`
+            <li class="nav-item section-tab-item animate__animated animate__zoomIn" data-section="${tabCounter + 1}">
+                <a class="nav-link nav-link-section" data-toggle="tab"
+                    data-section="${tabCounter + 1}"
+                    data-for-section-tab="${tabCounter + 1}"
+                   data-messageTab-section="${tabCounter + 1}" id="st-${tabCounter + 1}"
+                   href="#home" role="tab">
+                    <span class="hidden-sm-up"><i class="ti-home"></i></span>
+                    <span class="hidden-xs-down">Robô ${tabCounter + 1}</span>
+                </a>
+            </li>
+        `);
+
+                // dealing with content
+                var contentList = document.querySelectorAll(".tab-pane-sections");
+                var contentCounter = contentList.length;
+                var contentHolder = $("#id_section_content_holder");
+                var messageSection = messageCard(0, 0, contentCounter + 1);
+                var image = imageInput(contentCounter + 1);
+                var caption = imageCaption(contentCounter + 1);
+                var contacts = contactList(contentCounter + 1);
+                var settings = settingsCard(contentCounter + 1);
+                contentHolder.append(`
+            <div class="tab-pane tab-pane-sections" data-section="${contentCounter + 1}"
+                             id="sp-${contentCounter + 1}" role="tabpanel">
+                <div class=" row p-10 d-flex justify-content-around ">
+                    <div class="col-md-12">
+                        ${messageSection}
+                        <div class="row">
+                            ${image}
+                            ${caption}
+                        </div>
+                        <form class="form-material">
+                            <div class="row">
+                                ${contacts}
+                                ${settings}
+                            </div>
+                        </form>
+                        <div class="logs card">
+                            <h3 class="card-title text-themecolor p-l-20 p-t-20">Status</h3>
+                            <p class="p-l-20">Acompanhe o status do envio de cada mensagem</p>
+                            <div class="card-body status-body">
+                            <div class="bootstrap-table">
+                                <div class="fixed-table-container m-t-20"
+                                    style="height: 250px; ">
+                                    <table class="table-hover table">
+                                        <thead class="justify-content-around">
+                                            <tr class="justify-content-around">
+                                                <th><h5 class="text-themecolor">Número</h5>
+                                                </th>
+                                                <th><h5 class="text-themecolor">Status</h5>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <div class="fixed-table-body"
+                                        style="position: relative; height: 180px; overflow: auto; display: block;">
+                                        <table class="table table-hover "
+                                            data-toggle="table" data-height="100"
+                                            data-sort-order="desc"
+                                            data-mobile-responsive="true">
+                                            <tbody id='id-status-table'
+                                                data-section="${contentCounter + 1}">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+                handleAddRemoveSections();
+                handleListeners(contentCounter + 1);
+                dropifyListener();
+                $(`button#btn-input-add[data-section='contentCounter + 1']`).on("click", function(e) {
+                    let section = $(this).attr("data-section");
+                    let name = $(`#input-contact-name[data-section='${section}']`).val();
+                    let number = $(`#input-contact-number[data-section='${section}']`).val();
+                    let tableHolder = $(`#id_table_holder[data-section='${section}']`);
+                    let lastElement = $(`#id_table_holder[data-section='${section}'] tr:last`);
+                    let lastIdx = $(lastElement).attr("data-index");
+
+                    tableHolder.append(`
+                            <tr class="contact-row" data-index="${lastIdx + 1}" data-section="${section}">
+                                <td><h6 class="contact-name"
+                                        id="id_contact_name_${lastIdx + 1}"
+                                        data-section="${section}">${name}</h6></td>
+                                <td>
+                                    <h6 class="contact-phone-number"
+                                        id="id_contact_phone_number_${lastIdx + 1}"
+                                        data-section="${section}">${number}</h6>
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-danger"
+                                            id="btn-input-remove"
+                                            type="button"
+                                            data-index="${lastIdx + 1}"
+                                            data-section="${section}">
+                                    <i class="ti-trash"></i></button>
+                                </td>
+                            </tr>
+                            `);
+
+                });
+            }
+        });
+
+        $("#id_remove_section").on("click", function (e) {
+            e.preventDefault();
+            var tabsList = $(".section-tab-item");
+            var contentList = $(".tab-pane-sections");
+
+            if (tabsList.length === 1) {
+
+            } else {
+                var lastTab = tabsList.last();
+                var lastContent = contentList.last();
+                lastTab.addClass('animate__animated').addClass('animate__zoomOut');
+                setTimeout(() => {
+                    lastTab.remove()
+                }, 300);
+                lastContent.addClass('animate__animated').addClass('animate__zoomOut');
+                setTimeout(() => {
+                    lastContent.remove()
+                }, 300);
+            }
+        });
+
+        function handleAddRemoveSections() {
+            document.querySelectorAll(".nav-link-section").forEach(navLink => {
+                navLink.addEventListener('click', () => {
+                    const listItem = navLink.parentElement;
+                    const navBar = listItem.parentElement;
+                    const tabContainer = navBar.parentElement;
+
+                    const tabNumber = navLink.dataset.forSectionTab;
+                    const selectedContentTab = tabContainer.children[1];
+                    const tabToActivate = selectedContentTab.querySelector(`.tab-pane-sections[data-section="${tabNumber}"]`);
+
+                    navBar.querySelectorAll('.nav-item').forEach(listItem => {
+                        listItem.querySelector('.nav-link-section').classList.remove('active')
+                    });
+                    selectedContentTab.querySelectorAll('.tab-pane-sections').forEach(tabLinks => {
+                        tabLinks.classList.remove('active');
+                    });
+                    navLink.classList.add('active');
+                    tabToActivate.classList.add('active');
+
+                    // ==============================================
+                    //      ADD LISTENERS TO THE BUTTONS
+                    $(`button#id_add_message`).on("click", function (e) {
+                        e.preventDefault();
+
+                        var currSection = $(this).attr("data-section");
+                        var tabsList = document.querySelectorAll(`.message-tab-item[data-section='${currSection}']`);
+                        var tabCounter = tabsList.length;
+
+                        var tabsHolder = $(`ul#id_nav_tabs[data-section='${currSection}']`);
+
+                        // add new tab to the list
+                        tabsHolder.append(`
+                        <li class="nav-item message-tab-item animate__animated animate__zoomIn" data-section="${currSection}">
+                            <a class="nav-link nav-link-msg" data-toggle="tab" data-for-tab="${tabCounter + 1}"
+                            data-messageTab-section="${currSection}"  id="${tabCounter + 1}" data-section="${currSection}"
+                            href="#home" role="tab">
+                                <span class="hidden-sm-up"><i class="ti-home"></i></span>
+                                <span class="hidden-xs-down">M${tabCounter + 1}</span>
+                            </a>
+                        </li>
+                    `);
+
+                        // dealing with content
+                        var contentList = document.querySelectorAll(`.tab-pane-msg[data-section='${currSection}']`);
+                        var contentCounter = contentList.length;
+                        var contentHolder = $(`#id_content_holder[data-section='${currSection}']`);
+
+                        contentHolder.append(`
+                    <div class="tab-pane tab-pane-msg" data-id='${contentCounter + 1}' data-messagePane-section="${currSection}"
+                        data-section="${currSection}"
+                            id="${contentCounter + 1}" role="tabpanel">
+                            <div class=" row p-10 d-flex justify-content-around ">
+                                <textarea name="msg_area" cols="40" rows="12" class="form-control col-lg-11 m-l-30 msg-area-content" required=""
+                                            id="id_msg_area_${contentCounter + 1}"></textarea>
+                            </div>
+                        </div>
+                    `);
+
+                        handleButtonAddRemove();
+                    });
+
+                }, {passive: true})
+            });
+        }
+
+        // =========================================
+        //          SLEEP
+        // =========================================
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // =========================================
+        //          SAVE CONTACTS TO CSV
+        // =========================================
+        function csvJSON(csv) {
+
+            var lines = csv.split("\n");
+
+            var result = [];
+
+            // NOTE: If your columns contain commas in their values, you'll need
+            // to deal with those before doing the next step
+            // (you might convert them to &&& or something, then covert them back later)
+            // jsfiddle showing the issue https://jsfiddle.net/
+            var headers = lines[0].split(",");
+
+            for (var i = 1; i < lines.length; i++) {
+
+                var obj = {};
+                var currentline = lines[i].split(",");
+
+                for (var j = 0; j < headers.length; j++) {
+                    obj[headers[j]] = currentline[j];
+                }
+                result.push(obj);
+            }
+            //return result; //JavaScript object
+            return JSON.stringify(result); //JSON
+        }
+
+        // =========================================
+        //          APPEND ONE SESSION
+        // =========================================
+        function messageCard(tabCounter, contentCounter, section) {
+            var messageTabHtml = addMessageTab(tabCounter, section);
+            var messageContentHtml = addMessageContent(contentCounter, section);
+            var addMessageBtnHtml = addMessageBtn(section);
+            var removeMessageBtnHtml = removeMessageBtn(section);
+
+            return (`<div class="card messages-card-honeycomb">
+                <img class="card-img-top honeycomb honeycomb-top-right" src="../static/assets/images/gold_honeycomb_top_right.png" alt="Card image">
+                <div class="card-body card-img-overlay">
+                    <div class="row">
+                        <div class="col-lg-12 justify-content-start">
+                            <h4 class="card-title text-themecolor">Adicionar Mensagens</h4>
+                        </div>
+                        <div class="col-lg-12 justify-content-end">
+                            <div class="row justify-content-end">
+                                ${addMessageBtnHtml}
+                                ${removeMessageBtnHtml}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs tabs-msg container " id="id_tabs-msg">
+                        <ul class="nav nav-tabs" role="tablist" id="id_nav_tabs" data-navtabholder-message="1"
+                            data-section="${section}">
+                            ${messageTabHtml}
+                        </ul>
+        <div class="tab-content tabcontent-border" id="id_content_holder" data-section="${section}">
+            ${messageContentHtml}
+        </div>
+        </div>
+        </div>
+        </div>`)
+        }
+
+        function imageInput(section) {
+            return (`
+            <div class="col-lg-6 col-md-6">
+                <div class="card attachimage-card-honeycomb">
+                    <img class="card-img-top honeycomb honeycomb-down-left-small"
+                         src="../static/assets/images/gold_honeycomb_down_left.png" alt="Card image">
+                    <div class="card-body card-img-overlay container-fluid p-t-20">
+                        <h4 class="card-title text-themecolor">Anexar Imagem</h4>
+                        <label for="input-file-now">Escolha uma imagem para enviar com a
+                            mensagem</label>
+                        <input type="file" id="input-file-now"
+                        class="dropify image-input" data-allowed-file-extensions="jpeg jpg png JPEG JPG PNG"
+                        data-max-file-size="3M" data-section="${section}">
+                    </div>
+                </div>
+            </div>
+        `);
+        }
+
+        function imageCaption(section) {
+            return (`
+            <div class="col-md-6 col-lg-6">
+                <div class=" card imagecaption-card-honeycomb">
+                    <img class="card-img-top honeycomb honeycomb-down-right-small"
+                         src="../static/assets/images/gold_honeycomb_down_right.png"
+                         alt="Card image">
+                    <div class="card-body card-img-overlay">
+                        <h4 class="card-title text-themecolor">Legenda</h4>
+                        <label>Se desejar incluir uma lengenda para imagem digite abaixo.
+                            (opcional)</label>
+                        <textarea name="image_caption" cols="40" rows="9"
+                                  class="form-control col-lg-auto"
+                                  required=""
+                                  id="id_image_caption"
+                                  placeholder="Digite aqui..."
+                                  data-section="${section}"></textarea>
+                    </div>
+                </div>
+            </div>
+        `);
+        }
+
+        function contactList(section) {
+            return (`
+            <div class="col-lg-6 col-md-6">
+                <div class="card card-honeycomb">
+                    <img class="card-img-top honeycomb honeycomb-top-left-small"
+                         src="../static/assets/images/gold_honeycomb_top_left.png"
+                         alt="Card image">
+                    <div class="card-body card-img-overlay">
+                        <h4 class="card-title text-themecolor">Contatos</h4>
+                        <div class="bootstrap-table">
+                            <div class="fixed-table-container m-t-20"
+                                 style="height: 250px; ">
+                                <table class="table-hover table">
+                                    <thead class="justify-content-around">
+                                    <tr class="justify-content-around">
+                                        <th><h5 class="text-themecolor">Nome</h5></th>
+                                        <th><h5 class="text-themecolor">Número</h5></th>
+                                        <th><button class="btn btn-outline-success"
+                                                    id="btn-input-add"
+                                                    type="button"
+                                                    data-section="${section}">
+                                            <i class="ti-plus"></i></button>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                                <div class="fixed-table-body"
+                                     style="position: relative; height: 180px; overflow: auto; display: block;">
+                                    <table class="table table-hover "
+                                           data-toggle="table" data-height="100"
+                                           data-sort-order="desc"
+                                           data-mobile-responsive="true">
+                                        <tbody id='id_table_holder' data-section="${section}">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Importar Contatos</label>
+                            <div class="fileinput fileinput-new input-group"
+                                 data-provides="fileinput" data-section="${section}">
+                                <div class="form-control" data-trigger="fileinput" data-section="${section}"><i
+                                        class="glyphicon glyphicon-file fileinput-exists" data-section="${section}"></i>
+                                    <span
+                                            class="fileinput-filename"
+                                            id="id_contact_list" data-section="${section}"></span></div>
+                                <span class="input-group-addon btn btn-default btn-file" data-section="${section}"> <span
+                                        class="fileinput-new" data-section="${section}">Selecionar</span> <span
+                                        class="fileinput-exists" data-section="${section}">Adicionar</span>
+                                    <input type="hidden" id="id_input_hidden_csv" data-section="${section}">
+                                    <input class="input-csv" type="file" id="id_input_csv" accept=".csv" name="..."
+                                           data-allowed-file-extensions="csv" data-section="${section}"> </span>
+                                <a href="#" id="id-remove-file"
+                                   class="input-group-addon btn btn-default fileinput-exists"
+                                   data-dismiss="fileinput">Remover</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `)
+        }
+
+        function settingsCard(section) {
+            return (`
+            <div class="col-lg-6 col-md-6">
+                <div class="card card-honeycomb" style="height: 454px">
+                    <img class="card-img-top honeycomb honeycomb-top-right-small"
+                         src="../static/assets/images/gold_honeycomb_top_right.png"
+                         alt="Card image">
+                    <div class="card-body card-img-overlay container-fluid m-t-20">
+                        <form class="form-material">
+                            <h4 class="card-title text-themecolor">Configurações</h4>
+                            <label class="card-title">Defina o Intervalo entre
+                                Mensagens</label>
+                            <div class="row form-group justify-content-start">
+                                <p class="text text-themecolor">Mínimo: </p>
+                                <input id="id_delay_min"
+                                       class="form-control "
+                                       type="text" name="interval_min" required=""
+                                       placeholder="60" value="60"
+                                       data-section="${section}">
+
+                                <p>segundos</p>
+                            </div>
+                            <div class="row form-group justify-content-start">
+                                <p class="text text-themecolor">Máximo: </p>
+                                <input data-location="" id="id_delay_max"
+                                       class="form-control"
+                                       type='text' name="interval_max"
+                                       required=""
+                                       placeholder="180" value="180"
+                                       data-section="${section}">
+                                <p>segundos</p>
+                            </div>
+                            <p class="text text-themecolor" style="margin-left: -10px">Envio duplo com prefixo 9?</p>
+                            <div class=" form-group justify-content-start">
+                                <input type="checkbox"
+                                       id="nine_checkbox"
+                                       data-section="${section}"
+                                       name="'nine"
+                                       class="filled-in chk-col-orange" >
+                                <label for="nine_checkbox">Por padrão deixe esta opção desativada!
+                                Ative somente quando os envios são feitos para números obtidos
+                                    a partir da ferramenta "Gerador de Números".</label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="container-fluid justify-content-center"
+                     style="display: flex; align-items: center; justify-content: center;">
+                    <button data-action="send_message" id='id-send-btn-${section}'
+                            class="btn btn-warning btn-send-message m-b-30"
+                            style="width: 100%;"
+                            data-section="${section}">
+                        <i class="fa fa-send fa-lg p-10"> Iniciar Robô</i>
+                    </button>
+                </div>
+            </div>
+        `);
+        }
+
+        function addMessageBtn(section) {
+            return (`
+        <button class="btn btn-outline-success add-message" type="submit"
+                data-section="${section}" name="add_message" id="add-message-s-${section}"
+                value="add">Adicionar
+        </button>
+    `);
+        }
+
+        function removeMessageBtn(section) {
+            return (`
+        <button class=" btn-outline-danger m-l-30 m-r-20 remove-message" type="submit"
+                data-section="${section}" name="remove_message" id="id-remove-message-s-${section}"
+                value="remove">Remover
+        </button>
+    `);
+        }
+
+        function addMessageTab(tabCounter, section) {
+            var active = "active";
+            var animation = "";
+            if (tabCounter > 0) {
+                active = "";
+                animation = "animate__animated animate__zoomIn";
+            }
+            return (`
+            <li class="nav-item message-tab-item ${animation}" data-section="${section}">
+                <a class="nav-link nav-link-msg ${active}" data-toggle="tab" data-for-tab="${tabCounter + 1}"
+                id="${tabCounter + 1}" data-section="${section}" href="#home" role="tab">
+                    <span class="hidden-sm-up"><i class="ti-home"></i></span>
+                    <span class="hidden-xs-down">M${tabCounter + 1}</span>
+                </a>
+            </li>
+        `);
+        }
+
+        function addMessageContent(contentCounter, section) {
+            var active = "active";
+            if (contentCounter > 0) {
+                active = ""
+            }
+            return (`
+                <div class="tab-pane tab-pane-msg ${active}" data-id='${contentCounter + 1}' data-messagePane-section="${contentCounter + 1}"
+                    data-section="${section}" role="tabpanel">
+                    <div class=" row p-10 d-flex justify-content-around container-fluid">
+                        <textarea name="msg_area" cols="40" rows="12"
+                                  data-section="${section}"
+                                  class="form-control col-lg-11 m-l-30 msg-area-content" required=""
+                                  id="id_msg_area_1"></textarea>
+                    </div>
+                </div>
+            `);
+        }
+
+        handleListeners();
+        handleButtonAddRemove();
+        handleAddRemoveSections();
+        dropifyListener();
+
+        function setSectionName(section) {
+            sectionName = section;
+        }
+
+        function getSectionName() {
+            return sectionName;
+        }
+    });
+</script>
+<script>
+    $(document).ready(() => {
+        $(".group-switch").on('change', function () {
+            var isChecked = document.getElementById("id_switch_name_link").checked;
+            var labelLink = document.getElementById("id_label_link_group");
+            var labelName = document.getElementById("id_label_name_group");
+            if (isChecked) {
+                labelLink.classList.add(`text-themecolor`);
+                labelName.classList.remove(`text-themecolor`)
+            } else {
+                labelLink.classList.remove(`text-themecolor`);
+                labelName.classList.add(`text-themecolor`)
+            }
+        });
+
+        $("#statusid").on("click", () => {
+            console.log(document.getElementById("id_switch_name_link").checked)
+        });
+    });
+
+
+</script>
+<style>
+    ::-webkit-scrollbar {
+        width: 12px;
+        background: #353b45;
+
+    }
+
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+        background: linear-gradient(to right, #353b45, #ffb22b, #353b45);
+    }
+</style>
+<!-- Insert this line after script imports -->
+<script>if (window.module) module = window.module;</script>
+</body>
+
+</html>

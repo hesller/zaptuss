@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/assets/images/favicon.png">
+    <title>ZAPTUSS - Envio em Massa no Whatsapp</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/assets/plugins/dropify/dist/css/dropify.min.css">
+    <!-- Custom CSS -->
+    <link href="../static/css/style.css" rel="stylesheet">
+    <!-- colors -->
+    <!-- You can change the theme colors from here -->
+    <link href="../static/css/colors/megna-dark.css" id="theme" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"/>
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+    <script src="../static/js/nunjucks.js"></script>
+    <script>
+        window.nodeRequire = require;
+        delete window.require;
+        delete window.exports;
+        delete window.module;
+    </script>
+    <script type="text/javascript">
+        var result = [];
+
+        function handleContacts_js(contacts, group_name) {
+            var extractorTableHolder = $("#id_extractor_table");
+            for (var i = 1; i < contacts.length - 1; i++) {
+                var obj = {};
+
+                obj[`${group_name} - ${i.pad(3)}`] = contacts[i];
+
+                result.push(obj);
+                extractorTableHolder.append(`
+                <tr data-index="${i + 1}">
+                    <td><h6 id="id_contact_name_${i + 1}">${group_name} - ${i.pad(3)}</h6></td>
+
+                    <td>
+                        <h6 id="id_contact_phone_number_${i + 1}">${contacts[i]}</h6>
+                    </td>
+                </tr>
+                `)
+            }
+        }
+
+        Number.prototype.pad = function (size) {
+            var s = String(this);
+            while (s.length < (size || 2)) {
+                s = "0" + s;
+            }
+            return s;
+        }
+
+    </script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body class="fix-header card-no-border">
+<!-- ============================================================== -->
+<!-- Preloader - style you can find in spinners.css -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+    </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<div id="main-wrapper">
+    <!-- ============================================================== -->
+    <!-- End Topbar header -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Page wrapper  -->
+    <!-- ============================================================== -->
+    <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="row page-titles">
+                <div class="col-md-5 col-8 align-self-center">
+                    <h3 class="text-themecolor m-b-0 m-t-0">Extrator de Contatos</h3>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                        <li class="breadcrumb-item active">Extrator de Contatos</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Start Page Content -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <!--<div class="col-md-5 col-lg-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row justify-content-around">
+                                <div class="col-md-7 col-sm-7 col-lg-7 col-xs-7">
+                                    <h4 class="card-title text-themecolor">Passo 1</h4>
+                                    <div class="switch group-switch">
+                                        <div class="row" style="padding-left: 15px" >
+                                            <label class="" id="id_label_name_group">Nome
+                                            <input type="checkbox" checked="checked" id="id_switch_name_link">
+                                                <span class="lever"></span>
+                                            </label>
+                                            <label class="text-themecolor" id="id_label_link_group">Link do Grupo</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 col-sm-1 col-lg-1 col-xs-1">
+
+                                    <button class="btn btn-sm btn-outline-warning add-group-item" data-index="1"
+                                            data-type="add-group-item"><span class="fa fa-plus fa-lg"></span></button>
+                                </div>
+                                <div class="col-md-1 col-sm-1 col-lg-1 col-xs-1 m-r-15">
+                                    <button class="btn btn-sm btn-outline-danger remove-group-item" data-index="1"
+                                            data-type="remove-group-item"><span class="fa fa-minus fa-lg"></span></button>
+                                </div>
+                            </div>
+                            <ul id="id_group_list" class="list-group" style="list-style-type: none">
+                                <li data-index="1" class="m-b-15 li-group-item">
+                                    <div class="row justify-content-around">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-material">
+                                            <input class="form-control input-group-to-extract" type="text"
+                                                   name="group_to_extract"
+                                                   required="" placeholder="Digite aqui nome do grupo...">
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card card-down-left">
+                        <img class="card-img-top image-background-animation image-background-down-left"
+                             src="../static/assets/images/gold_honeycomb_down_left.png"
+                             alt="Card image">
+                        <div class="card-body card-img-overlay">
+                            <h4 class="card-title text-themecolor">Passo 2</h4>
+                            <p>Em seguinda clique no botão abaixo para iniciar o WhatsappWeb e extrair todos os contatos
+                                do(s) grupo(s) acima. </p>
+                            <button class="btn btn-outline-warning " id="id_group_extract">Extrair contatos</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7 col-lg-7">
+                    <div class="card card-extract-contacts">
+                        <img class="card-img-top image-background-animation image-extract-contacts"
+                             src="../static/assets/images/gold_honeycomb_top_right.png"
+                             alt="Card image">
+                        <div class="card-body card-img-overlay">
+                            <h4 class="card-title text-themecolor">Contatos Extraídos</h4>
+                            <div class="bootstrap-table">
+                                <div class="fixed-table-container m-t-20" style="height: 300px; ">
+                                    <table class="table-hover table">
+                                        <thead class="justify-content-around">
+                                        <tr class="justify-content-around">
+                                            <th><h5 class="text-themecolor">Nome</h5></th>
+                                            <th><h5 class="text-themecolor">Whatsapp</h5></th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                    <div class="fixed-table-body"
+                                         style="position: relative; height: 220px; overflow: auto; display: block;">
+                                        <table class="table table-hover " data-toggle="table" data-height="100"
+                                               data-sort-order="desc"
+                                               data-mobile-responsive="true">
+                                            <tbody id='id_extractor_table'>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="container-fluid justify-content-end m-t-10">
+                                        <button class="btn btn-outline-warning"
+                                                id="id_export_contacts"
+                                                onclick="exportTableToCSV(null, 'contatos.csv')"
+                                                style="float: right">Exportar Contatos
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="col-md-5 col-lg-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row justify-content-around">
+                                <div class="col-md-7 col-sm-7 col-lg-7 col-xs-7">
+                                    <h4 class="card-title text-themecolor">Gerador Numérico</h4>
+                                </div>
+                            </div>
+                            <ul id="generator-list" class="list-group" style="list-style-type: none">
+                                <li data-index="1" class="m-b-15 li-group-item">
+                                    <div class="row justify-content-around">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-material">
+                                            <h4 class="card-title text-themecolor">Whatsapp Inicial</h4>
+                                            <input class="form-control input-extractor" type="text"
+                                                   name="group_to_extract" required="" placeholder="Formato 552199136XXXX...">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li data-index="1" class="m-b-15 li-group-item">
+                                    <div class="row justify-content-around">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-material">
+                                            <h4 class="card-title text-themecolor">Quantidade de Número</h4>
+                                            <input class="form-control input-quantity" type="text"
+                                                   name="group_to_extract" required="" placeholder="Digite aqui...">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li data-index="1" class="m-b-15 li-group-item">
+                                    <div class="row justify-content-around">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-material">
+                                            <h4 class="card-title text-themecolor">Modo Turbo</h4>
+                                            <p class="">Ativa processamento de dados em paralelo utlizando assim todos os núcleos da CPU</p>
+                                            <div class="switch group-switch">
+                                                <div class="row" style="padding-left: 15px" >
+                                                    <label class="" id="id_label_name_group">Desativado
+                                                        <input type="checkbox" checked="checked" id="id_switch_name_link">
+                                                        <span class="lever switch-col-amber"></span>
+                                                    </label>
+                                                    <label class="text-themecolor" id="id_label_link_group">Ativado</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <button class="btn btn-outline-warning " id="id-generator">Gerar Números</button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7 col-lg-7">
+                    <h3 class="card-title text-themecolor p-l-20 p-t-20">Análise de Números</h3>
+                    <p class="p-l-20">Lista com números encontrados dentro do intervalo especificado.</p>
+                    <div class="card-body status-body">
+                        <div class="bootstrap-table">
+                            <div class="fixed-table-container "
+                                 style="height: 250px; ">
+                                <table class="table-hover table">
+                                    <thead class="justify-content-around">
+                                    <tr class="justify-content-around">
+                                        <th><h5 class="text-themecolor">Número</h5>
+                                        </th>
+                                        <th><h5 class="text-themecolor">Status</h5>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                                <div class="fixed-table-body"
+                                     style="position: relative; height: 180px; overflow: auto; display: block;">
+                                    <table class="table table-hover "
+                                           data-toggle="table" data-height="100"
+                                           data-sort-order="desc"
+                                           data-mobile-responsive="true">
+                                        <tbody id='id-status-table'
+                                               data-section="1">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-end p-t-20">
+                            <h5 class="text-themecolor">Total de Números Analisados: </h5>
+                            <h5 class="text-info p-l-10 total-analised">0</h5>
+                        </div>
+                        <div class="row justify-content-end">
+                            <h5 class="text-themecolor">Total de Contatos Encontrados: </h5>
+                            <h5 class="text-megna p-l-10 total-found">0</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<script>if (typeof module === 'object') {window.module = module;module = undefined;}</script>
+<script src="../static/assets/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="../static/assets/plugins/bootstrap/js/popper.min.js"></script>
+<script src="../static/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="../static/js/jquery.slimscroll.js"></script>
+<!--Wave Effects -->
+<script src="../static/js/waves.js"></script>
+<!--Menu sidebar -->
+<script src="../static/js/sidebarmenu.js"></script>
+<!--stickey kit -->
+<script src="../static/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+<script src="../static/assets/plugins/sparkline/jquery.sparkline.min.js"></script>
+<!--Custom JavaScript -->
+<script src="../static/js/custom.min.js"></script>
+<!-- ============================================================== -->
+<!-- Plugins for this page -->
+<!-- ============================================================== -->
+<!-- jQuery file upload -->
+<script src="../static/assets/plugins/dropify/dist/js/dropify.min.js"></script>
+<!-- ============================================================== -->
+<!-- This page plugins -->
+<!-- ============================================================== -->
+<script src="../static/js/jasny-bootstrap.js"></script>
+<!-- ============================================================== -->
+<!-- Style switcher -->
+<!-- ============================================================== -->
+<script src="../static/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+<!-- ============================================================== -->
+<!-- Style switcher -->
+<!-- ============================================================== -->
+<script src="../static/assets/plugins/bootstrap-switch/bootstrap-switch.min.js"></script>
+
+<script type="text/javascript">
+
+</script>
+<script >
+    const {ipcRenderer} = nodeRequire("electron");
+    const Swal = nodeRequire("sweetalert2");
+    const QRcode = nodeRequire("qrcode");
+
+
+    $(document).ready(function () {
+        $("button#id_group_extract").on('click', (e) => {
+            e.preventDefault();
+            var groups = [];
+            document.querySelectorAll(".input-group-to-extract").forEach((elem, idx) => {
+                groups.push(elem.value);
+            });
+            //var isChecked = document.getElementById("id_switch_name_link").checked;
+
+
+        });
+    });
+
+    // ===================================================
+    // add listener to the first element of the group item
+    /*document.querySelector(`button[data-type='add-group-item']`).addEventListener('click', evt => {
+        evt.preventDefault();
+        var addBtnList = document.querySelectorAll(".add-group-item");
+        var addBtnListLength = addBtnList.length;
+        var groupList = $("ul#id_group_list");
+        groupList.append(`
+            <li data-index='${addBtnListLength + 1}' class="m-b-15 li-group-item">
+                <div class="row justify-content-around">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 form-material animate__animated animate__zoomIn">
+                        <input class="form-control input-group-to-extract" type="text"
+                               name="group_to_extract"
+                               required="" placeholder="Digite aqui nome do grupo...">
+                    </div>
+                </div>
+            </li>
+        `);
+    });
+
+    document.querySelector(`button[data-type='remove-group-item']`).addEventListener(`click`, evt => {
+        evt.preventDefault();
+        var lastItemGroup = $(`.li-group-item`).last();
+
+        lastItemGroup.addClass('animate__animated').addClass('animate__zoomOut');
+        setTimeout(()=>{
+            lastItemGroup.remove()
+        }, 350)
+
+    });
+*/
+    $(".group-switch").on('change', function () {
+        var isChecked = document.getElementById("id_switch_name_link").checked;
+        var labelLink = document.getElementById("id_label_link_group");
+        var labelName = document.getElementById("id_label_name_group");
+        if (isChecked) {
+            console.log(`is checked`);// To verify
+
+            labelLink.classList.add(`text-themecolor`);
+            labelName.classList.remove(`text-themecolor`)
+        } else {
+            console.log(`not checked`);// To verify
+            labelLink.classList.remove(`text-themecolor`);
+            labelName.classList.add(`text-themecolor`)
+        }
+    });
+
+    $("button#id-generator").on("click", function() {
+        var startNumber = $(".input-extractor").val();
+        var qtd = $(".input-quantity").val();
+        var turboMode = document.getElementById("id_switch_name_link").checked;
+
+        Swal.fire({
+            title: 'Gerando QRCode !',
+            html: 'Estabelecendo conexão...',// add html attribute if you want or remov
+            onBeforeOpen: () => {
+                Swal.showLoading()
+            },
+        });
+
+        ipcRenderer.send("number-generator", [startNumber,qtd, turboMode])
+
+        ipcRenderer.on("extractor-qrcode", (event, arg) => {
+            Swal.fire({
+                title: "Seu QrCode!",
+                text: "Por favor, Escaneei o código utilzando seu Whatsapp!",
+                html: `<canvas id="canvas-extractor"></canvas>`
+            });
+
+            // Get the canvas id and use QRCode to display in it
+            const canvas = document.getElementById("canvas-extractor");
+            QRcode.toCanvas(canvas, arg, function (error) {
+                if (error) console.error(error);
+                console.log('success!');
+            });
+
+        });
+
+        ipcRenderer.on("extracting", (event, arg) => {
+            attachSendingRow(arg);
+        });
+
+        ipcRenderer.on("extractor-connected", (event, arg) => {
+            const currId = arg['id'].slice(0,13)
+            Swal.fire({
+                title: `Seja Bem Vindo ${arg['name']} - ${currId}!`,
+                text: "Extraindo e analizando números...",
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                },
+                timer: 3000,
+            });
+        })
+
+        ipcRenderer.on("extractor-finished", (event, arg) => {
+            Swal.fire({
+                title: `Processo Finalizado!`,
+                text: "Processo finalizado com sucesso",
+                icon: "success",
+            });
+        });
+
+        ipcRenderer.on("extractor-failed-to-connect", (event, arg) => {
+            Swal.fire({
+                title: `Erro ao Conecta ao websocket!`,
+                text: "Restabelecendo conexão. Aguarde...",
+                onBeforeOpen: () => {
+                    Swal.showLoading()
+                },
+                timer: 8000,
+            });
+        });
+
+        function attachSendingRow(arg) {
+            let tableHolder = $(`#id-status-table`);
+            let totalFound = $(`.total-found`);
+            let totalAnalised = $(`.total-analised`);
+
+            tableHolder.before(`
+                <tr class="contact-row .animated .fadeIn" data-index="${arg['index']}">
+                    <td><h6 class="status-contact">${arg['contact']}</h6></td>
+                    <td>
+                        <h6 class="text-success registered-number">${arg['number']}</h6>
+                    </td>
+                </tr>
+            `);
+            totalFound.text(arg['totalFound']);
+            totalAnalised.text(arg['totalAnalised']);
+        }
+
+    });
+
+    function exportTableToCSV(html, filename) {
+        var csv = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for(var i = 0; i < rows.length; i++){
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+            for(var j = 0; j < cols.length; j++){
+                row.push(cols[j].innerText);
+            }
+            csv.push(row.join(","));
+        }
+
+        // download csv file
+        downloadCSV(csv.join("\n"), filename);
+    }
+
+    function downloadCSV(csv, filename) {
+        var csvFile;
+        var downloadLink;
+
+        if (window.Blob == undefined || window.URL == undefined || window.URL.createObjectURL == undefined) {
+            alert("Your browser doesn't support Blobs");
+            return;
+        }
+
+        csvFile = new Blob([csv], {type:"text/csv"});
+        downloadLink = document.createElement("a");
+        downloadLink.download = filename + ".csv";
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+    }
+
+</script>
+
+<script>
+    $(document).ready(() => {
+
+        const customTitlebar = nodeRequire('custom-electron-titlebar');
+        const {Menu, MenuItem} = nodeRequire("electron").remote;
+        const menu = new Menu();
+
+
+
+    });
+
+</script>
+<script>
+    $(document).ready(() => {
+
+        const customTitlebar = nodeRequire('custom-electron-titlebar');
+        const {Menu, MenuItem} = nodeRequire("electron").remote;
+        const {ipcRenderer} = nodeRequire("electron");
+        const hp = nodeRequire("../static/js/helpers.js")
+        const menu = new Menu();
+        var currUser = null;
+
+        ipcRenderer.send("grab-user", 'grab him!');
+
+        ipcRenderer.on("got-user", (event, args) => {
+            currUser = args
+            hp.buildMenu(menu, currUser)
+        })
+
+    });
+</script>
+<style>
+    ::-webkit-scrollbar {
+        width: 12px;
+        background: #353b45;
+
+    }
+
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+        background: linear-gradient(to right, #353b45, #ffb22b,#353b45);
+    }
+</style>
+
+<!-- Insert this line after script imports -->
+<script>if (window.module) module = window.module;</script>
+</body>
+
+</html>

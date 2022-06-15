@@ -1,0 +1,65 @@
+{
+  "name": "zaptuss",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "dist": "electron-builder",
+    "build": "yarn electron-builder",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@adiwajshing/baileys": "^2.3.1",
+    "csv-parser": "^2.3.3",
+    "csv-write-stream": "^2.0.0",
+    "custom-electron-titlebar": "^3.2.4",
+    "electron-log": "^4.2.4",
+    "electron-reload": "^1.5.0",
+    "electron-tabs": "^0.15.0",
+    "electron-titlebar-windows": "^3.0.0",
+    "instagram-web-api": "^2.2.2",
+    "jquery": "^3.5.1",
+    "js-base64": "^3.4.5",
+    "node-fetch": "^2.6.0",
+    "qrcode": "^1.4.4",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
+    "rxjs": "^6.6.3",
+    "save": "^2.4.0",
+    "sharp": "^0.26.2",
+    "sweetalert2": "^9.17.1",
+    "venom-bot": "^2.0.18",
+    "yarn": "^1.22.4"
+  },
+  "devDependencies": {
+    "electron": "^9.2.0",
+    "electron-builder": "^22.9.1",
+    "electron-rebuild": "^2.0.2"
+  },
+  "build": {
+    "appId": "com.impactuss.zaptuss",
+    "productName": "Zaptuss",
+    "extraResources": [
+      {
+        "from": "standardfolders/",
+        "to": "../../resources/"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "requestedExecutionLevel": "requireAdministrator"
+    }
+  }
+}

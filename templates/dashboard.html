@@ -1,0 +1,558 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/assets/images/zaptuss-icon.png">
+    <title>Zaptuss - Painel de Acompanhamento</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- chartist CSS -->
+    <link href="../static/assets/plugins/chartist-js/dist/chartist.min.css" rel="stylesheet">
+    <link href="../static/assets/plugins/chartist-js/dist/chartist-init.css" rel="stylesheet">
+    <link href="../static/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css" rel="stylesheet">
+    <!--This page css - Morris CSS -->
+    <link href="../static/assets/plugins/c3-master/c3.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../static/css/style.css" rel="stylesheet">
+    <!-- You can change the theme colors from here -->
+    <link href="../static/css/colors/megna-dark.css" id="theme" rel="stylesheet">
+    <script>
+        window.nodeRequire = require;
+        delete window.require;
+        delete window.exports;
+        delete window.module;
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script type="text/javascript" src="../node_modules/jquery/dist/jquery.js"></script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+
+    </script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="fix-header single-column card-no-border">
+<!-- ============================================================== -->
+<!-- Preloader - style you can find in spinners.css -->
+<!-- ============================================================== -->
+<div class="preloader">
+    <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+</div>
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<div id="main-wrapper">
+    <!-- ============================================================== -->
+    <!-- Page wrapper  -->
+    <!-- ============================================================== -->
+    <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="row page-titles">
+                <div class="col-md-5 col-5 align-self-center">
+                    <h3 class="text-themecolor">Painel de Gerenciamento</h3>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Início</a></li>
+                        <li class="breadcrumb-item active">Painel</li>
+                    </ol>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-3 align-self-center">
+                    <button class="btn btn-outline-warning">Atualizar Dados</button>
+                </div>
+                <div class="col-md-4 col-4 align-self-center">
+                    <div class="d-flex m-t-10 justify-content-end">
+                        <div class="d-flex m-r-20 m-l-10 hidden-md-down">
+                            <div class="chart-text m-r-10">
+                                <h6 class="m-b-0"><small>ESTE MÊS</small></h6>
+                                <h4 class="m-t-0 text-info">58,356</h4></div>
+                            <div class="spark-chart">
+                                <div id="monthchart"></div>
+                            </div>
+                        </div>
+                        <div class="d-flex m-r-20 m-l-10 hidden-md-down">
+                            <div class="chart-text m-r-10">
+                                <h6 class="m-b-0"><small>MÊS PASSADO</small></h6>
+                                <h4 class="m-t-0 text-primary">48,356</h4></div>
+                            <div class="spark-chart">
+                                <div id="lastmonthchart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Start Page Content -->
+            <!-- ============================================================== -->
+            <!-- Row -->
+            <div class="row">
+                <!-- Column -->
+                <div class="col-lg-12 col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="d-flex flex-wrap">
+                                        <div>
+                                            <h3 class="card-title">Envios</h3>
+                                            <h6 class="card-subtitle">Quantidade de  mensagens por dia</h6> </div>
+                                        <div class="ml-auto">
+                                            <div class="form-group">
+                                                <label>Mês</label>
+                                                <select class="form-control" id="total-messages-month-select">
+                                                    <option id="standard-select"></option>
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <option>3</option>
+                                                    <option>4</option>
+                                                    <option>5</option>
+                                                    <option>6</option>
+                                                    <option>7</option>
+                                                    <option>8</option>
+                                                    <option>9</option>
+                                                    <option>10</option>
+                                                    <option>11</option>
+                                                    <option>12</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 container">
+                                    <canvas id="total-sents" style="height: 360px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">DDD's </h3>
+                            <h6 class="card-subtitle">Envios por DDD</h6>
+                            <div id="visitor" style="height:290px; width:100%;"></div>
+                        </div>
+                        <div>
+                            <hr class="m-t-0 m-b-0">
+                        </div>
+                        <div class="card-body text-center ">
+                            <ul class="list-inline m-b-0">
+                                <li>
+                                    <h6 class="text-muted text-info"><i class="fa fa-circle font-10 m-r-10 "></i>Conta 1</h6> </li>
+                                <li>
+                                    <h6 class="text-muted  text-primary"><i class="fa fa-circle font-10 m-r-10"></i>Conta 2</h6> </li>
+                                <li>
+                                    <h6 class="text-muted  text-success"><i class="fa fa-circle font-10 m-r-10"></i>Conta 3</h6> </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Row -->
+            <!-- Row -->
+            <div class="row">
+                <!-- Column -->
+                <div class="col-lg-4 col-xlg-3 col-md-5">
+                    <div class="card blog-widget">
+                        <div class="card-body">
+                            <div class="blog-image"><img src="../static/assets/images/zaptuss.png" alt="img" class="img-responsive"/></div>
+                            <h3>Business development new rules for 2017</h3>
+                            <label class="label label-rounded label-success">Technology</label>
+                            <p class="m-t-20 m-b-20">
+                                Lorem ipsum dolor sit amet, this is a consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                            </p>
+                            <div class="d-flex">
+                                <div class="read"><a href="javascript:void(0)" class="link font-medium">Read More</a></div>
+                                <div class="ml-auto">
+                                    <a href="javascript:void(0)" class="link m-r-10 " data-toggle="tooltip" title="Like"><i class="mdi mdi-heart-outline"></i></a> <a href="javascript:void(0)" class="link" data-toggle="tooltip" title="Share"><i class="mdi mdi-share-variant"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-xlg-9 col-md-7">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap">
+                                <div>
+                                    <h3 class="card-title">Newsletter Campaign</h3>
+                                    <h6 class="card-subtitle">Overview of Newsletter Campaign</h6>
+                                </div>
+                                <div class="ml-auto align-self-center">
+                                    <ul class="list-inline m-b-0">
+                                        <li>
+                                            <h6 class="text-muted text-success"><i class="fa fa-circle font-10 m-r-10 "></i>Open Rate</h6> </li>
+                                        <li>
+                                            <h6 class="text-muted text-info"><i class="fa fa-circle font-10 m-r-10"></i>Recurring Payments</h6> </li>
+
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <div class="campaign ct-charts"></div>
+                            <div class="row text-center">
+                                <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">5098</h1><small>Total Sent</small></div>
+                                <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">4156</h1><small>Mail Open Rate</small></div>
+                                <div class="col-lg-4 col-md-4 m-t-20"><h1 class="m-b-0 font-light">1369</h1><small>Click Rate</small></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Row -->
+            <div class="row">
+                <!-- Column -->
+                <div class="col-lg-4 col-md-4">
+                    <div class="card card-inverse card-primary">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="m-r-20 align-self-center">
+                                    <h1 class="text-white"><i class="ti-pie-chart"></i></h1></div>
+                                <div>
+                                    <h3 class="card-title">Bandwidth usage</h3>
+                                    <h6 class="card-subtitle">March  2017</h6> </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 align-self-center">
+                                    <h2 class="font-light text-white">50 GB</h2>
+                                </div>
+                                <div class="col-8 p-t-10 p-b-20 align-self-center">
+                                    <div class="usage chartist-chart" style="height:65px"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Column -->
+                <!-- Column -->
+                <div class="col-lg-4 col-md-4">
+                    <div class="card card-inverse card-success">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="m-r-20 align-self-center">
+                                    <h1 class="text-white"><i class="icon-cloud-download"></i></h1></div>
+                                <div>
+                                    <h3 class="card-title">Download count</h3>
+                                    <h6 class="card-subtitle">March  2017</h6> </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 align-self-center">
+                                    <h2 class="font-light text-white">35487</h2>
+                                </div>
+                                <div class="col-8 p-t-10 p-b-20 text-right">
+                                    <div class="spark-count" style="height:65px"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Column -->
+                <!-- Column -->
+                <div class="col-lg-4 col-md-4">
+                    <div class="card">
+                        <img class="" src="../static/assets/images/gold_honeycomb_down_left.png" alt="Card image cap">
+                        <div class="card-img-overlay" style="height:110px;">
+                            <h3 class="card-title text-white m-b-0 dl">New Delhi</h3>
+                            <small class="card-text text-white font-light">Sunday 15 march</small>
+                        </div>
+                        <div class="card-body weather-small">
+                            <div class="row">
+                                <div class="col-8 b-r align-self-center">
+                                    <div class="d-flex">
+                                        <div class="display-6 text-info"><i class="wi wi-day-rain-wind"></i></div>
+                                        <div class="m-l-20">
+                                            <h1 class="font-light text-info m-b-0">32<sup>0</sup></h1>
+                                            <small>Sunny Rainy day</small>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-4 text-center">
+                                    <h1 class="font-light m-b-0">25<sup>0</sup></h1>
+                                    <small>Tonight</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Column -->
+            </div>
+            <!-- Row -->
+            <!-- ============================================================== -->
+            <!-- End PAge Content -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<script src="../static/assets/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="../static/assets/plugins/bootstrap/js/popper.min.js"></script>
+<script src="../static/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="../static/js/jquery.slimscroll.js"></script>
+<!--Wave Effects -->
+<script src="../static/js/waves.js"></script>
+<!--Menu sidebar -->
+<script src="../static/js/sidebarmenu.js"></script>
+<!--stickey kit -->
+<script src="../static/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+<script src="../static/assets/plugins/sparkline/jquery.sparkline.min.js"></script>
+<!--Custom JavaScript -->
+<script src="../static/js/custom.min.js"></script>
+<!-- ============================================================== -->
+<!-- This page plugins -->
+<!-- ============================================================== -->
+<!-- chartist chart -->
+<script src="../static/assets/plugins/chartist-js/dist/chartist.min.js"></script>
+<script src="../static/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js"></script>
+<!--c3 JavaScript -->
+<script src="../static/assets/plugins/d3/d3.min.js"></script>
+<script src="../static/assets/plugins/c3-master/c3.min.js"></script>
+<!-- Chart JS -->
+<script src="../static/js/dashboard1.js"></script>
+<!-- ============================================================== -->
+<!-- Style switcher -->
+<!-- ============================================================== -->
+<script src="../static/assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+<script>
+    // imports
+    const customTitlebar = nodeRequire('custom-electron-titlebar');
+    const {Menu, MenuItem} = nodeRequire("electron").remote;
+    const {ipcRenderer} = nodeRequire("electron");
+    const hp = nodeRequire("../static/js/helpers.js");
+    const fetch = nodeRequire("node-fetch")
+    const engHelpers = nodeRequire("../resources/engine/helpers.js")
+    const Swal = nodeRequire("sweetalert2");
+    const dt = new Date()
+
+    // constants
+    const menu = new Menu();
+    var currUser = null;
+    let url = 'https://zaptussapi.rj.r.appspot.com/api/messages/month/';
+    let usersUrl = 'https://zaptussapi.rj.r.appspot.com/api/users/';
+    var monthlyMessagesData = [];
+    var allUsers = [];
+    var messagesData = [];
+    var month;
+
+    $(document).ready(() => {
+        // ----------------------------------------------
+        // make call to grab the current authenticated user saved on cache
+        ipcRenderer.send("grab-user", 'grab him!');
+
+        // -----------------------------------------------
+        // the user is returned in this listener
+        ipcRenderer.on("got-user", async (event, args) => {
+            month = dt.getMonth();
+            $("option#standard-select").text(month);
+            currUser = args
+            hp.buildMenu(menu, currUser['is_staff']);
+            monthlyMessagesData = await allMessagesForCurrentMonth(url,currUser, month);
+            let allMessages = await engHelpers.reduceToMaximumCounts(monthlyMessagesData)
+            allUsers = await requestAllUsers(usersUrl, currUser);
+            drawTotalMessagesSentChart(allMessages);
+        });
+    })
+
+    $("select#total-messages-month-select").on("change", async () => {
+        var value = $("select#total-messages-month-select").val()
+
+        // request for the selected month
+        monthlyMessagesData = await allMessagesForCurrentMonth(url,currUser, value);
+
+        // check if users has been cached
+        if (allUsers === []) {
+
+            // display loading to the user
+            engHelpers.displayLoading("Carregando dados.", "carregando usuários...")
+
+            // make the request to grab all users
+            allUsers = requestAllUsers(usersUrl, currUser);
+        }
+
+        // grab all messages counted and draw the chart
+        let allMessages = await engHelpers.reduceToMaximumCounts(monthlyMessagesData)
+        drawTotalMessagesSentChart(allMessages);
+    })
+
+
+    $("#update-status").on('click', async () => {
+        let token = currUser['token'];
+
+        Swal.fire({
+            title: "Atualizando Dados...",
+            text: "aguarde um momento.",
+            onBeforeOpen: () => {
+                Swal.showLoading()
+            },
+        });
+
+        messagesData = await $.ajax({
+            url: url,
+            dataType: 'JSON',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader ("Authorization", "Token " + currUser['token']);
+            },
+        }).done(res => {
+            Swal.fire({
+                title: "Atualizado!",
+                text: "conteudo atualizado com sucesso.",
+                icon: 'success'
+            })
+            return res;
+        });
+        console.log(messagesData)
+    })
+
+    // ----------------------------------------------
+    // get and draw first chart
+    function drawTotalMessagesSentChart(allMessages) {
+        console.log("-------------------------------")
+        console.log(" data before format")
+
+        // get canvas element
+        let messagesSentCanvas = document.getElementById("total-sents").getContext('2d');
+
+        // create chart
+        let messagesSentChart = new Chart(messagesSentCanvas,{
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: Object.keys(allMessages),
+                datasets: [{
+                    backgroundColor: 'rgba(255,178,43,0.14)',
+                    borderColor: '#ffb22b',
+                    data: Object.values(allMessages),
+                }]
+            },
+
+            // Configuration options go here
+            options: {
+                title: {
+                    display: false
+                },
+                legend: {
+                    display: false
+                }
+            }
+        });
+    }
+
+    // ===============================================
+    //          AJAX REQUESTS
+    // make ajax request to grabe all users in database
+    async function requestAllUsers(usersUrl, currUser) {
+        return await $.ajax({
+            url: usersUrl,
+            method: "get",
+            dataType: 'JSON',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader ("Authorization", "Token " + currUser['token']);
+            },
+        })
+            .done(res => {
+                Swal.close();
+                return res;
+            })
+            .catch(err => {
+                engHelpers.displayError("Erro!",
+                    `houve um erro durante a solicitação ${err}`,
+                    3000)
+            });
+    }
+
+    // -----------------------------------------------
+    // ajax request to get all messages for current month
+    async function allMessagesForCurrentMonth(url, currUser, month = null) {
+
+        const val = engHelpers.getMonth(month);
+
+        const arrayMesasges =  await $.ajax({
+            url: url+`${val}`,
+            dataType: 'JSON',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader ("Authorization", "Token " + currUser['token']);
+            },
+        })
+            .done(res => {
+                Swal.close();
+                return res;
+            })
+            .catch(err => engHelpers.displayError("Erro!", `Houve um erro durante a solicitação: ${err.message}`, 3000));
+
+        return arrayMesasges;
+    }
+
+</script>
+<style>
+    ::-webkit-scrollbar {
+        width: 12px;
+        background: #353b45;
+
+    }
+
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+        background: linear-gradient(to right, #353b45, #ffb22b,#353b45);
+    }
+</style>
+</body>
+
+</html>
